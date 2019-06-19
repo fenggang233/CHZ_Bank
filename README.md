@@ -6,7 +6,7 @@
 ## 使用方法
 ### 获取代码
 ```
-git colne '....'
+git colne https://github.com/charleyustccs/CHZ_Bank.git
 ```
 
 ### 安装项目依赖
@@ -31,3 +31,7 @@ yarn start
 
 `src/util`是期望的API的样子
 
+## 备注
+每次的改动记录到`CHANGELOG.md`中
+
+把自己的任务和完成情况写到`TODO.md`中
