@@ -1,0 +1,57 @@
+.branch-root-page{
+  margin: 24px 16px;
+  padding: 24px;
+  background: #fff;
+  min-height: 630px;
+}
+
+.coll-content{
+  border-top: solid #D9D9D9 0.5px;
+  display: flex;
+  align-items: center;
+}
+
+.branch-list{
+  border-radius: 5px; 
+  box-shadow: 0 0 5px #d5d5d5; 
+  padding: 25px;
+  margin-right: 20px;
+}
+
+.branch-list:hover{
+  box-shadow: 0 0 10px #ddd; 
+}
+
+.branch-loan-list {
+  border-radius: 5px; 
+  box-shadow: 0 0 5px #d5d5d5; 
+  padding: 25px;
+  margin-top: 20px;
+} 
+
+.branch-loan-list:hover{
+  box-shadow: 0 0 10px #ddd; 
+}
+
+.total-info{
+  border-radius: 5px; 
+  box-shadow: 0 0 5px #d5d5d5; 
+  display: flex;
+  align-items: center;
+}
+
+.total-info:hover{
+  box-shadow: 0 0 10px #ddd; 
+}
+
+.ant-advanced-search-form {
+  padding: 24px;
+}
+
+.ant-advanced-search-form .ant-form-item {
+  display: flex;
+}
+
+.ant-advanced-search-form .ant-form-item-control-wrapper {
+  flex: 1;
+}

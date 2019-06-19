@@ -1,0 +1,12 @@
+.chart {
+  width: 40%;
+  margin: 30px 4%;
+}
+
+.mixed-chart{
+  margin: 24px 16px;
+  padding: 24px;
+  background: #fff;
+  display: flex;
+  flex-wrap: wrap;
+}

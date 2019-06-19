@@ -1,0 +1,12 @@
+.root-page{
+  margin: 24px 16px;
+  padding: 24px;
+  background: #fff;
+  min-height: 630px;
+}
+
+.coll-content{
+  border-top: solid #D9D9D9 0.5px;
+  display: flex;
+  align-items: center;
+}

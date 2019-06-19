@@ -1,0 +1,113 @@
+.trigger {
+  font-size: 18px;
+  line-height: 64px;
+  padding: 0 24px;
+  cursor: pointer;
+  transition: color 0.3s;
+}
+
+.topBtn {
+  font-size: 18px;
+  line-height: 64px;
+  padding-right: 32px;
+  cursor: pointer;
+  transition: color 0.3s;
+}
+
+.topBtnEnd {
+  font-size: 18px;
+  line-height: 64px;
+  padding-right: 16px;
+  cursor: pointer;
+  transition: color 0.3s;
+}
+
+.topBadge{
+  margin-top: -24px;
+  margin-left: -40px;
+}
+
+.topBadge:hover{
+  cursor: pointer;
+}
+
+.topBtn:hover {
+  color: #1890ff;
+}
+
+
+.topBtnEnd:hover {
+  color: #1890ff;
+}
+
+.trigger:hover {
+  color: #1890ff;
+}
+
+.avatar {
+  height: 30px;
+  width: 30px;
+  margin-top: 14px;
+  margin-right: 10px;
+  margin-left: 5px;
+  border-radius: 100px;
+}
+
+.username {
+  font-size: 14px;
+  color: rgb(60, 60, 60);
+  line-height: 58px;
+  padding-right: 12px;
+  cursor: pointer;
+  transition: color 0.3s;
+}
+
+.searchBtn {
+  position: relative;
+  z-Index: 9998;
+}
+
+.username:hover {
+  color: #1890ff;
+}
+
+.logo {
+  height: 32px;
+  margin: 16px;
+  text-align: center;
+  overflow: hidden;
+  opacity: 0.7;
+}
+
+.logo-svg {
+  height: 32px;
+  width: 32px;
+}
+
+.logo-name-svg{
+  height: 24px;
+  margin-left: 10px;
+}
+
+.logo-mini {
+  height: 32px;
+  text-align: left;
+  overflow: hidden;
+}
+
+.logo-svg-mini {
+  height: 32px;
+  width: 32px;
+}
+
+.logo-name-svg-mini{
+  height: 24px;
+  margin-left: 10px;
+}
+
+.search{
+  width: 200px;
+  margin-top: 13px;
+  margin-right: -26px;
+  font-size: 16px;
+}                
