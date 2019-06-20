@@ -57,6 +57,15 @@ class Branch{
     // 对数据进行查询，
   }
 
+  deleteBranch = (name) => {
+    for (var i = 0; i < this.data.length; i++) {
+      if (this.data[i].name === name) {
+        this.data.splice(i, 1);
+        this.sum--;
+        break;
+      }
+    }
+  }
 }
 
 export default Branch;

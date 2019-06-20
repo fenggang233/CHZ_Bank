@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
-import { Button, List, Avatar, Skeleton, Icon, Divider, Modal } from 'antd';
+import { Button, List, Avatar, Skeleton, Icon, Divider, Modal, Popconfirm } from 'antd';
 import Chart from "react-apexcharts";
 
 import SearchPage from './SearchPage';
 import AddPage from './AddPage';
+import EditPage from './EditPage';
 
 import Branch from '../../util/Branch';
 
@@ -19,6 +20,15 @@ let colors = [
   '#8577CF',
 ]
 
+const Logo = (
+  <div className="logo-mini">
+    <img alt='logo' className="logo-svg-mini" src={logo} />
+    <img alt='logo-name'
+      className="logo-name-svg-mini"
+      src={logoNameB} />
+  </div>
+);
+
 const donut_option = {
   chart: {
     type: 'donut'
@@ -33,7 +43,8 @@ class CollapsePage extends Component {
   state = {
     initLoading: true,
     loading: false,
-    logVisible: false,
+    addVisible: false,
+    editVisible: false,
     count: 3,
     list: [ ],
   };
@@ -68,33 +79,45 @@ class CollapsePage extends Component {
     }, 500);
   };
 
-
-  showModal = () => {
+  showAddModal = () => {
     this.setState({
-      logVisible: true,
+      addVisible: true,
     });
   };
 
-
-  handleCancel = () => {
+  showEditModal = () => {
     this.setState({
-      logVisible: false
+      editVisible: true,
     });
   };
+
+  handleAddCancel = () => {
+    this.setState({
+      addVisible: false
+    });
+  };
+
+  handleEditCancel = () => {
+    this.setState({
+      editVisible: false
+    });
+  };
+
+  handleDeleteBranch = (name, index) => {
+    var l = this.state.list;
+    l.splice(index, 1);
+    this.setState({
+      list: l
+    })
+    branch.deleteBranch(name);
+  }
 
   render() {
-    const { initLoading, loading, list, loan } = this.state;
+    const { initLoading, loading, list, loan, addVisible, editVisible } = this.state;
     const loadMore =
       !initLoading && !loading ? (
-        <div
-          style={{
-            textAlign: 'center',
-            marginTop: 12,
-            height: 32,
-            lineHeight: '32px',
-          }}
-        >
-          <Button type="primary" onClick={this.showModal.bind(this)} icon="plus-circle" style={{ margin: 5 }}>
+        <div style={{ textAlign: 'center', marginTop: 12, height: 32, lineHeight: '32px' }} >
+          <Button type="primary" onClick={this.showAddModal} icon="plus-circle" style={{ margin: 5 }}>
             添加
           </Button>
           <Button onClick={this.onLoadMore} icon="sync" style={{ margin: 5 }}>
@@ -104,7 +127,7 @@ class CollapsePage extends Component {
       ) : null;
 
     return (
-      <div className="branch-root-page" style={{ display: 'grid', gridTemplateColumns: '50% 50%' }}>
+      <div id="branch-root-page" style={{ display: 'grid', gridTemplateColumns: '50% 50%' }}>
         <List
           header={
             <h3>CHZ Bank 支行列表</h3>
@@ -115,7 +138,18 @@ class CollapsePage extends Component {
           loadMore={loadMore}
           dataSource={list}
           renderItem={(item, i) => (
-            <List.Item actions={[<a href="www" >删除</a>, <a href="w">更多</a>]}>
+            <List.Item actions={[
+              <Popconfirm placement="top" title={"确定编辑？"} 
+                onConfirm={ this.showEditModal }
+                okText="确定" cancelText="取消">
+                <Icon className="func-icon" type="edit" />
+              </Popconfirm>,
+              <Popconfirm placement="top" title={"确定删除？"} 
+                onConfirm={ this.handleDeleteBranch.bind(this, item.name, i) }
+                okText="确定" cancelText="取消">
+                <Icon className="func-icon" type="delete" />
+              </Popconfirm>,
+              ]}>
               <Skeleton avatar title={false} loading={item.loading} active>
                 <List.Item.Meta
                   avatar={
@@ -181,21 +215,14 @@ class CollapsePage extends Component {
           />
         </div>
         <Modal
-          visible={this.state.logVisible}
-          title={(
-            <div className="logo-mini">
-              <img alt='logo' className="logo-svg-mini" src={logo} />
-              <img alt='logo-name'
-                className="logo-name-svg-mini"
-                src={logoNameB} />
-            </div>
-          )}
-          onOk={this.handleOk}
-          footer={null}
-          onCancel={this.handleCancel}
-          style={{ position: "relative", zIndex: 9999 }}
-        >
+          visible={addVisible} title={Logo} footer={null}
+          onCancel={this.handleAddCancel} style={{ position: "relative", zIndex: 9999 }} >
           <AddPage />
+        </Modal>
+        <Modal
+          visible={editVisible} title={Logo} footer={null}
+          onCancel={this.handleEditCancel} style={{ position: "relative", zIndex: 9999 }} >
+          <EditPage />
         </Modal>
       </div>
     )

@@ -1,8 +1,16 @@
-.branch-root-page{
+#branch-root-page{
   margin: 24px 16px;
   padding: 24px;
   background: #fff;
   min-height: 630px;
+}
+
+#branch-root-page .func-icon {
+  margin: 5px;
+}
+
+#branch-root-page .func-icon:hover {
+  color: #1890ff;
 }
 
 .coll-content{

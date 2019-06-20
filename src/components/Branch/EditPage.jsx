@@ -5,7 +5,7 @@ import './index.css';
 
 const { Option } = Select;
 
-class AddForm extends Component {
+class EditForm extends Component {
   state = {
     loading: false,
     logVisible: false,
@@ -33,37 +33,33 @@ class AddForm extends Component {
       <Form onSubmit={this.handleSubmit} className="login-form">
         <Form.Item>
           {getFieldDecorator('name', {
-            rules: [{ required: true, message: '请输入名字！' }],
           })(
             <Input
               prefix={<Icon type="bank" style={{ color: 'rgba(0,0,0,.25)' }} />}
-              placeholder="支行名"
+              placeholder="新的支行名"
             />,
           )}
         </Form.Item>
         <Form.Item>
           {getFieldDecorator('city', {
-            rules: [{ required: true, message: '请输入密码！' }],
           })(
             <Input
               prefix={<Icon type="global" style={{ color: 'rgba(0,0,0,.25)' }} />}
-              placeholder="城市"
+              placeholder="新的城市"
             />,
           )}
         </Form.Item>
         <Form.Item>
           <span>
             {getFieldDecorator('assets', {
-              rules: [{ required: true, message: '请输入资产！' }],
             })(
               <Input
                 prefix={<Icon type="property-safety" style={{ color: 'rgba(0,0,0,.25)' }} />}
-                placeholder="资产"
+                placeholder="新的资产"
                 style={{ width: '65%', marginRight: '3%' }}
               />
             )}
             {getFieldDecorator('type', {
-              rules: [{ required: true, message: '请选择币种！' }],
             })(
               <Select
                 defaultValue="rmb"
@@ -73,11 +69,11 @@ class AddForm extends Component {
                 <Option style={{ color: 'rgba(0,0,0,.25)' }} value="dollar">USD</Option>
               </Select>
             )}
-          </span>    
+          </span>
         </Form.Item>
         <Form.Item>
-          <Button type="primary" loading={ this.state.loading } htmlType="submit" className="login-form-button">
-            录入
+          <Button type="primary" loading={this.state.loading} htmlType="submit" className="login-form-button">
+            修改
           </Button>
         </Form.Item>
       </Form>
@@ -85,6 +81,6 @@ class AddForm extends Component {
   }
 }
 
-const WrappedAddForm = Form.create({ name: 'normal_login' })(AddForm);
+const WrappedEditForm = Form.create({ name: 'normal_login' })(EditForm);
 
-export default WrappedAddForm;
+export default WrappedEditForm;
