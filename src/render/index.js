@@ -1,24 +1,36 @@
+import Branch from '../util/Branch';
+
+const branch = new Branch();
+
 const chzBankReducer = (state, action) => {
   if (!state || action.type === 'INIT') {
     return {
-      debugData: [
-        { id: '1', name: 'Microsoft', sum: 2000 },
-        { id: '2', name: 'Huawei', sum: 1800 },
-        { id: '3', name: 'Google', sum: 1500 },
-      ],
       login: false,
-      users: [
-        { userId: 'root', password: 'root' }
-      ]
+      infoList: []
     }
   }
 
   switch (action.type) {
+    case 'LOGIN':
+      return {
+        ...state,
+        login: true,
+        userInfo: action.userInfo,
+        infoList: [
+          {
+            uid: '1', name: '有新业务要处理', status: 'done',
+          },
+          {
+            uid: '2', name: '赶紧去领取本月工资', status: 'done',
+          },
+        ]
+      }
     case 'ADD_DATA':
       return {
         ...state,
         debugData: [...state.debugData, action.data]
       }
+
     case 'DELETE_DATA':
       return {
         ...state,

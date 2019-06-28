@@ -20,6 +20,8 @@ class AddForm extends Component {
       }, 1000);
       if (!err) {
         console.log('Received values of form: ', values);
+        this.props.onAdd(values);
+        this.props.onUpdate(values);
         message.success('录入成功');
       } else {
         message.error('录入失败！');
@@ -66,11 +68,10 @@ class AddForm extends Component {
               rules: [{ required: true, message: '请选择币种！' }],
             })(
               <Select
-                defaultValue="rmb"
                 style={{ width: '32%', }}
               >
-                <Option style={{ color: 'rgba(0,0,0,.25)' }} value="rmb">RMB</Option>
-                <Option style={{ color: 'rgba(0,0,0,.25)' }} value="dollar">USD</Option>
+                <Option style={{ color: 'rgba(0,0,0,.25)' }} value="RMB">RMB</Option>
+                <Option style={{ color: 'rgba(0,0,0,.25)' }} value="USD">USD</Option>
               </Select>
             )}
           </span>    

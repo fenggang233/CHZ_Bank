@@ -20,6 +20,7 @@ class NormalLoginForm extends Component {
         console.log('Received values of form: ', values);
         if (values.username === 'charley' && values.password === 'root') {
           message.success('登陆成功!');
+          this.props.onLogin(values);
         } else {
           message.error('登录失败！');
         }

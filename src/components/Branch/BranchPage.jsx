@@ -79,6 +79,12 @@ class CollapsePage extends Component {
     }, 500);
   };
 
+  onUpdate = (branch) => {
+    this.setState({
+      list: this.state.list.concat(branch),      
+    })
+  }
+
   showAddModal = () => {
     this.setState({
       addVisible: true,
@@ -217,7 +223,7 @@ class CollapsePage extends Component {
         <Modal
           visible={addVisible} title={Logo} footer={null}
           onCancel={this.handleAddCancel} style={{ position: "relative", zIndex: 9999 }} >
-          <AddPage />
+          <AddPage onAdd={ this.props.onAdd } onUpdate={ this.onUpdate } />
         </Modal>
         <Modal
           visible={editVisible} title={Logo} footer={null}

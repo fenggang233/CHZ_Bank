@@ -4,16 +4,21 @@ import { Layout, Icon, Menu, Badge, Input, Tooltip, Drawer, Modal, Popconfirm } 
 import 'antd/dist/antd.css';
 import './layouts.css';
 
-import BarChart from '../components/Charts/BarChart';
-import CollapsePage from '../components/CollapsePage/CollapsePage';
 import UserPage from '../components/User/UserPage';
 import InfoPage from '../components/Info/InfoPage';
-import BranchPage from '../components/Branch/BranchPage';
+
+import BranchPage from '../containers/BranchPage';
+import EmplyeePage from '../components/Emplyee/EmplyeePage';
+import ClientPage from '../components/Client/ClientPage';
+import AccountPage from '../components/Account/AccountPage';
+import LoanPage from '../components/Loan/LoanPage';
+import StatPage from '../components/Stat/StatPage';
 
 import logo from "../assets/logo.svg";
 import logoName from "../assets/logo-name.svg";
 import logoNameB from "../assets/logo-name-black.svg";
 import avatar from "../assets/avatar.jpg";
+import inviUser from "../assets/invis-user.png";
 
 const { Content, Sider, Header } = Layout;
 
@@ -73,6 +78,8 @@ class LayoutPage extends Component {
   };
 
   render() {
+    const { userInfo, login, infoList } = this.props;
+
     return (
       <Layout style={{ height: "100%" }}>
         <Sider style={{ height: "100%" }} trigger={null} collapsible collapsed={this.state.collapsed}>
@@ -141,14 +148,18 @@ class LayoutPage extends Component {
                 <Icon className="topBtn" type="bell" />
               </Tooltip>
               <div style={{ width: 0 }}>
-                <Popconfirm placement="bottom" title={<InfoPage/>} okText="已读" cancelText="关闭">
-                  <Badge className="topBadge" count={5} overflowCount={99} />
+                <Popconfirm placement="bottom" title={<InfoPage infoContent={ infoList } />} okText="已读" cancelText="关闭">
+                  <Badge className="topBadge" count={ login ? infoList.length : 0 } overflowCount={99} />
                 </Popconfirm>
               </div>
               <div style={{ display: "flex" }}>
-                <img alt="avatar" className="avatar" src={ this.state.user.avatar} />
+                <img alt="avatar" className="avatar" src={
+                  login ? avatar : inviUser
+                }/>
                 <Tooltip title="员工">
-                  <p onClick={ this.showModal.bind(this) } className="username">{ this.state.user.username }</p>
+                  <p onClick={ this.showModal.bind(this) } className="username">
+                    { login ? userInfo.username : "Log In" }
+                  </p>
                 </Tooltip>
               </div>
               <Tooltip placement="bottom" title="更多">
@@ -165,11 +176,20 @@ class LayoutPage extends Component {
             <div style={{ display: this.state.which === '1' ? '' : 'none' }}>
               <BranchPage />
             </div>
-            <div style={{ display: this.state.which === '6' ? '' : 'none' }}>
-              <BarChart />
-            </div>
             <div style={{ display: this.state.which === '2' ? '' : 'none' }}>
-              <CollapsePage />
+              <EmplyeePage />
+            </div>
+            <div style={{ display: this.state.which === '3' ? '' : 'none' }}>
+              <ClientPage />
+            </div>
+            <div style={{ display: this.state.which === '4' ? '' : 'none' }}>
+              <AccountPage />
+            </div>
+            <div style={{ display: this.state.which === '5' ? '' : 'none' }}>
+              <LoanPage />
+            </div>
+            <div style={{ display: this.state.which === '6' ? '' : 'none' }}>
+              <StatPage />
             </div>
           </Content>
         </Layout>
@@ -187,7 +207,7 @@ class LayoutPage extends Component {
           onCancel={this.handleCancel}
           style={{ position: "relative", zIndex: 9999 }}
         >
-          <UserPage />
+          <UserPage onLogin={ this.props.onLogin }  />
         </Modal>
         <Drawer
           title="More Options"

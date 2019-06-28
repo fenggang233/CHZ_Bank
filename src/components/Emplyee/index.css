@@ -1,0 +1,38 @@
+#emplyee-page {
+  margin: 24px 16px;
+  padding: 24px;
+  background: #fff;
+  min-height: 630px;
+}
+
+.coll-content{
+  border-top: solid #D9D9D9 0.5px;
+  display: flex;
+  align-items: center;
+}
+
+.emplyee-card {
+  border-radius: 5px; 
+  box-shadow: 0 0 5px #d5d5d5; 
+  padding: 25px;
+}
+
+.emplyee-card:hover {
+  box-shadow: 0 0 10px #ddd; 
+}
+
+.emplyee-top-card {
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.emplyee-list{
+  border-radius: 5px; 
+  box-shadow: 0 0 5px #d5d5d5; 
+  padding: 25px;
+}
+
+.emplyee-list:hover{
+  box-shadow: 0 0 10px #ddd; 
+}
