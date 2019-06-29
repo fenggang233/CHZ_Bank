@@ -29,14 +29,6 @@ const Logo = (
   </div>
 );
 
-const donut_option = {
-  chart: {
-    type: 'donut'
-  },
-  series: [44, 55, 13, 33],
-  labels: ['合肥', '北京', '上海', '深圳']
-}
-
 const branch = new Branch();
 
 class CollapsePage extends Component {
@@ -47,11 +39,29 @@ class CollapsePage extends Component {
     editVisible: false,
     count: 3,
     list: [ ],
+    searchResult: [],
+    changedBranch: {},
+    cityList: branch.genCityList(),
+    donut_option: {
+      chart: {
+        type: 'donut'
+      },
+      series: [44],
+      labels: ['合肥']
+    },
+    stat: {}
   };
 
   componentWillMount() {
+    const stat = branch.getAssetsStatByCity(); 
     this.setState({
-      list: branch.getBranches()
+      list: branch.getBranches(),
+      donut_option: {
+        ...this.state.donut_option,
+        series: stat.series,
+        labels: stat.labels
+      },
+      stat: stat
     })
   }
 
@@ -79,9 +89,26 @@ class CollapsePage extends Component {
     }, 500);
   };
 
-  onUpdate = (branch) => {
+  onUpdate = (newBranch) => {
+    branch.addBranch(newBranch);
     this.setState({
-      list: this.state.list.concat(branch),      
+      list: this.state.list.concat(newBranch),
+    })
+  }
+
+  onChange = (newInfo) => {
+    var { list, changedBranch } = this.state;
+    branch.changeBranch(changedBranch.name, newInfo);
+    list[changedBranch.index] = newInfo;
+    console.log(newInfo);
+    this.setState({
+      list: list
+    })
+  }
+
+  onSearch = (keys) => {
+    this.setState({
+      searchResult: branch.searchBranch(keys)
     })
   }
 
@@ -91,9 +118,13 @@ class CollapsePage extends Component {
     });
   };
 
-  showEditModal = () => {
+  showEditModal = (name, index) => {
     this.setState({
       editVisible: true,
+      changedBranch: {
+        name: name,
+        index: index
+      }
     });
   };
 
@@ -105,7 +136,7 @@ class CollapsePage extends Component {
 
   handleEditCancel = () => {
     this.setState({
-      editVisible: false
+      editVisible: false,
     });
   };
 
@@ -119,7 +150,7 @@ class CollapsePage extends Component {
   }
 
   render() {
-    const { initLoading, loading, list, loan, addVisible, editVisible } = this.state;
+    const { initLoading, loading, list, addVisible, editVisible, searchResult } = this.state;
     const loadMore =
       !initLoading && !loading ? (
         <div style={{ textAlign: 'center', marginTop: 12, height: 32, lineHeight: '32px' }} >
@@ -146,7 +177,7 @@ class CollapsePage extends Component {
           renderItem={(item, i) => (
             <List.Item actions={[
               <Popconfirm placement="top" title={"确定编辑？"} 
-                onConfirm={ this.showEditModal }
+                onConfirm={ this.showEditModal.bind(this, item.name, i) }
                 okText="确定" cancelText="取消">
                 <Icon className="func-icon" type="edit" />
               </Popconfirm>,
@@ -165,7 +196,7 @@ class CollapsePage extends Component {
                         twoToneColor={colors[i % 5]} />
                     </Avatar>
                   }
-                  title={<a href="https://ant.design">{item.name}</a>}
+                  title={item.name}
                   description={ item.city }
                 />
                 <div>{ item.assets }</div>
@@ -177,17 +208,17 @@ class CollapsePage extends Component {
           <div className="total-info">
             <Chart
               className="chart"
-              options={donut_option}
-              series={donut_option.series}
+              options={this.state.donut_option}
+              series={this.state.donut_option.series}
               type="donut"
               width="300"
             />
             <div style={{ marginLeft: 70 }}>
               <h3>CHZ Bank 支行资产统计</h3>    
               <Divider/>
-              <p>总资产多少</p>
-              <p>某某支行资产最多，占比34%</p>
-              <p>某某支行资产最少，占比14%</p>
+              <p>总资产{this.state.stat.sum}</p>
+              <p>{this.state.stat.max.city}资产最多，为{this.state.stat.max.assets}</p>
+              <p>{this.state.stat.min.city}资产最少，为{this.state.stat.min.assets}</p>
             </div>
           </div>
           <List
@@ -195,27 +226,40 @@ class CollapsePage extends Component {
               <div>
                 <h3>CHZ Bank 支行查找</h3>
                 <Divider/>
-                <SearchPage />
+                <SearchPage onSearch={ this.onSearch } />
               </div>
             }
             className="branch-loan-list"
             loading={initLoading}
             itemLayout="horizontal"
-            dataSource={loan}
+            dataSource={searchResult}
             renderItem={(item, i) => (
-            <List.Item actions={[<a href="www" >edit</a>, <a href="w">more</a>]}>
-              <List.Item.Meta
-                avatar={
-                  <Avatar style={{ backgroundColor: '#f5f5f5' }}>
-                    <Icon type="property-safety" style={{ fontSize: 18, paddingTop: 7 }}
-                    theme="twoTone"
-                    twoToneColor={colors[(i + 3) % 5]} />
-                  </Avatar>
-                }
-                title={<a href="https://ant.design">{item.name}</a>}
-                description={item.time}
-              />                  
-              <div>{item.assets}</div>
+              <List.Item actions={[
+                <Popconfirm placement="top" title={"确定编辑？"}
+                  onConfirm={this.showEditModal.bind(this, item.name, i)}
+                  okText="确定" cancelText="取消">
+                  <Icon className="func-icon" type="edit" />
+                </Popconfirm>,
+                <Popconfirm placement="top" title={"确定删除？"}
+                  onConfirm={this.handleDeleteBranch.bind(this, item.name, i)}
+                  okText="确定" cancelText="取消">
+                  <Icon className="func-icon" type="delete" />
+                </Popconfirm>,
+              ]}>
+                <Skeleton avatar title={false} loading={item.loading} active>
+                  <List.Item.Meta
+                    avatar={
+                      <Avatar style={{ backgroundColor: '#f5f5f5' }}>
+                        <Icon type="bank" style={{ fontSize: 18 }}
+                          theme="twoTone"
+                          twoToneColor={colors[i % 5]} />
+                      </Avatar>
+                    }
+                    title={item.name}
+                    description={item.city}
+                  />
+                  <div>{item.assets}</div>
+                </Skeleton>
               </List.Item>
             )}
           />
@@ -223,12 +267,12 @@ class CollapsePage extends Component {
         <Modal
           visible={addVisible} title={Logo} footer={null}
           onCancel={this.handleAddCancel} style={{ position: "relative", zIndex: 9999 }} >
-          <AddPage onAdd={ this.props.onAdd } onUpdate={ this.onUpdate } />
+          <AddPage onUpdate={ this.onUpdate } />
         </Modal>
         <Modal
           visible={editVisible} title={Logo} footer={null}
           onCancel={this.handleEditCancel} style={{ position: "relative", zIndex: 9999 }} >
-          <EditPage />
+          <EditPage onChange={ this.onChange } />
         </Modal>
       </div>
     )

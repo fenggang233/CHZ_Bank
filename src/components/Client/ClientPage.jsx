@@ -1,10 +1,15 @@
 import React, { Component } from 'react';
-import { Icon, Divider, List, Avatar, Popconfirm, Skeleton, Button } from 'antd';
+import { Icon, Divider, List, Avatar, Popconfirm, Skeleton, Button, Tooltip, Modal } from 'antd';
 import Chart from "react-apexcharts";
 
 import './index.css';
+import logo from "../../assets/logo.svg";
+import logoNameB from "../../assets/logo-name-black.svg";
 
-import SearchPage from '../Branch/SearchPage';
+import Client from '../../util/Client';
+import SearchPage from './SearchPage';
+import AddPage from './AddPage';
+import EditPage from './EditPage';
 
 let colors = [
   '#ED6D79',
@@ -24,7 +29,6 @@ var options = {
     bar: {
       horizontal: true,
     },
-
   },
   stroke: {
     width: 1,
@@ -102,7 +106,16 @@ var pie_options = {
   }]
 }
 
+const Logo = (
+  <div className="logo-mini">
+    <img alt='logo' className="logo-svg-mini" src={logo} />
+    <img alt='logo-name'
+      className="logo-name-svg-mini"
+      src={logoNameB} />
+  </div>
+);
 
+const client = new Client();
 
 class ClientPage extends Component {
   state = {
@@ -130,12 +143,96 @@ class ClientPage extends Component {
 
   componentDidMount() {
     this.setState({
-      initLoading: false
+      initLoading: false,
+      list: client.getClient()
     })
   }
 
+  showAddModal = () => {
+    this.setState({
+      addVisible: true,
+    });
+  };
+
+  handleAddCancel = () => {
+    this.setState({
+      addVisible: false
+    });
+  };
+
+  handleEditCancel = () => {
+    this.setState({
+      editVisible: false,
+    });
+  };
+
+  onUpdate = (newClient) => {
+    client.addClient(newClient);
+    this.setState({
+      list: this.state.list.concat(newClient),
+    })
+  }
+
+  onChange = (newInfo) => {
+    var { list, oldIndex, oldId } = this.state;
+    client.changeClient(oldId, newInfo);
+    list[oldIndex] = newInfo;
+    this.setState({
+      list: list
+    })
+  }
+
+  onSearch = (keys) => {
+    this.setState({
+      list: client.searchClient(keys)
+    })
+  }
+
+  onLoadMore = () => {
+    this.setState({
+      loading: true,
+      list: this.state.list.concat([...new Array(this.state.count)].map(() => ({
+        loading: true,
+        name: {}
+      }))),
+    });
+    setTimeout(() => {
+      this.setState({
+        loading: false,
+        list: this.state.list.slice(0,
+          this.state.list.length - this.state.count)
+          .concat(client.getEmplyee()),
+      });
+    }, 500);
+  };
+
+  handleEditCancel = () => {
+    this.setState({
+      editVisible: false,
+    });
+  };
+
+  handleDelete = (item, index) => {
+    var l = this.state.list;
+    l.splice(index, 1);
+    this.setState({
+      list: l
+    })
+    client.deleteClient(item.id);
+  }
+
+  handleEdit = (item, index) => {
+    console.log(item);
+    this.setState({
+      editVisible: true,
+      oldInfo: JSON.stringify(item),
+      oldIndex: index,
+      oldId: item.id
+    });
+  };
+
   render() {
-    const { initLoading, loading, list } = this.state;
+    const { initLoading, loading, list, addVisible, editVisible } = this.state;
     const loadMore =
       !initLoading && !loading ? (
         <div style={{ textAlign: 'center', marginTop: 12, height: 32, lineHeight: '32px' }} >
@@ -178,9 +275,9 @@ class ClientPage extends Component {
         <List
           header={
             <div>
-              <h3>CHZ Bank 员工列表</h3>
+              <h3>CHZ Bank 客户列表</h3>
               <Divider />
-              <SearchPage />
+              <SearchPage onSearch={this.onSearch} />
             </div>
           }
           className="list"
@@ -191,12 +288,12 @@ class ClientPage extends Component {
           renderItem={(item, i) => (
             <List.Item actions={[
               <Popconfirm placement="top" title={"确定编辑？"}
-                onConfirm={this.showEditModal}
+                onConfirm={this.handleEdit.bind(this, item, i)}
                 okText="确定" cancelText="取消">
                 <Icon className="func-icon" type="edit" />
               </Popconfirm>,
               <Popconfirm placement="top" title={"确定删除？"}
-                onConfirm={this.handleDeleteBranch.bind(this, item.name, i)}
+                onConfirm={this.handleDelete.bind(this, item, i)}
                 okText="确定" cancelText="取消">
                 <Icon className="func-icon" type="delete" />
               </Popconfirm>,
@@ -210,14 +307,57 @@ class ClientPage extends Component {
                         twoToneColor={colors[i % 5]} />
                     </Avatar>
                   }
-                  title={<a href="https://ant.design">{item.name}</a>}
-                  description={item.city}
+                  title={item.name}
                 />
-                <div>{item.assets}</div>
+                <div style={{ display: 'flex' }}>
+                  <div className="client-tab">
+                    <Tooltip title="身份证">
+                      <Icon type="idcard" theme="twoTone" className="client-tab-icon" />{item.id}
+                    </Tooltip>
+                  </div>
+                  <div className="client-tab">
+                    <Tooltip title="联系电话">
+                      <Icon type="phone" theme="twoTone" className="client-tab-icon" />{item.phone}
+                    </Tooltip>
+                  </div>
+                  <div className="client-tab">
+                    <Tooltip title="家庭住址">
+                      <Icon type="home" theme="twoTone" className="client-tab-icon" />{item.addr}
+                    </Tooltip>
+                  </div>
+                  <div className="client-tab">
+                    <Tooltip title={<div>
+                      <div>
+                        <Icon type="user" className="client-tab-icon" />{item.rname}
+                      </div>
+                      <div>
+                        <Icon type="phone" className="client-tab-icon" />{item.rphone}
+                      </div>
+                      <div>
+                        <Icon type="mail" className="client-tab-icon" />{item.remail}
+                      </div>
+                      <div>
+                        <Icon type="usergroup-add" className="client-tab-icon" />{item.rr}
+                      </div>
+                    </div>}>
+                      <Icon type="contacts" theme="twoTone" className="client-tab-icon" />联系人信息
+                    </Tooltip>
+                  </div>
+                </div>
               </Skeleton>
             </List.Item>
           )}
         />
+        <Modal
+          visible={addVisible} title={Logo} footer={null}
+          onCancel={this.handleAddCancel} style={{ position: "relative", zIndex: 9999 }} >
+          <AddPage onUpdate={this.onUpdate} />
+        </Modal>
+        <Modal
+          visible={editVisible} title={Logo} footer={null}
+          onCancel={this.handleEditCancel} style={{ position: "relative", zIndex: 9999 }} >
+          <EditPage oldInfo={this.state.oldInfo} onChange={this.onChange} />
+        </Modal>
       </div>
     )
   }

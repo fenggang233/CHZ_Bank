@@ -20,13 +20,13 @@ class AddForm extends Component {
       }, 1000);
       if (!err) {
         console.log('Received values of form: ', values);
-        this.props.onAdd(values);
         this.props.onUpdate(values);
         message.success('录入成功');
       } else {
         message.error('录入失败！');
       }
     });
+    this.props.form.resetFields();
   };
 
   render() {

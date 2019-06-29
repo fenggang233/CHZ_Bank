@@ -1,10 +1,10 @@
 var data = [
-  { id: '1234567789', branch: '合肥支行', phone: '1234576788', name: '张三', addr: '火星', date: '2018-08-08', manager: '牛四', mid: '124545656' },
-  { id: '1234567789', branch: '合肥支行', phone: '1234576788', name: '李四', addr: '水星', date: '2018-09-09', manager: '牛皮', mid: '124545656' },
-  { id: '1234567789', branch: '合肥支行', phone: '1234576788', name: '王五', addr: '木星', date: '2016-06-06', manager: '牛腿', mid: '124545656' },
+  { id: '1234567789', phone: '1234576788', name: '张三', addr: '火星', rname: 'jack', rphone: '201808', remail: 'char@ms.com', rr: '父子' },
+  { id: '1234567789', phone: '1234576788', name: '例三', addr: '地球', rname: 'jack', rphone: '201808', remail: 'char@ms.com', rr: '父子' },
+  { id: '1234567789', phone: '1234576788', name: '猪头', addr: '火星', rname: 'jack', rphone: '201808', remail: 'char@ms.com', rr: '父子' },
 ];
 
-class Emplyee {
+class Client {
   constructor(props) {
     if (props === null) {
       this.props = props
@@ -20,7 +20,7 @@ class Emplyee {
     this.data = data;
   }
 
-  getEmplyee = () => {
+  getClient = () => {
     // 每次只顺序返回count个，count由程序员初始化时设置
     // 还应该返回各种错误：已经全部返回，数据库错误等
     var data = this.data.slice(this.props.sum, this.props.sum + this.props.count);
@@ -28,7 +28,7 @@ class Emplyee {
     return data;
   }
 
-  addEmplyee = (emplyee) => {
+  addClient = (emplyee) => {
     // 输入：要添加的支行  list[obj]
     // 功能：添加元组到数据库，
     // 返回错误：数据库方面的错误
@@ -36,27 +36,28 @@ class Emplyee {
     this.props.sum += 1;
   }
 
-  changeEmplyee = (oldKey, newEmplyee) => {
+  changeClient = (oldKey, newClient) => {
     // 输入：修改多的新信息 obj
     // 操作：更新，首先检查key是不是新的
     for (var i = 0; i < this.data.length; i++) {
       if (this.data[i].id === oldKey) {
-        this.data[i] = newEmplyee;
+        this.data[i] = newClient;
         break;
       }
     }
   }
 
-  searchEmplyee = (keys) => {
+  searchClient = (keys) => {
     // 对数据进行查询，
-    return [
-      { id: '1234567789', branch: '合肥支行', phone: '1234576788', name: '张三?', addr: '火星', date: '2018-08-08', manager: '牛四', mid: '124545656' },
-      { id: '1234567789', branch: '合肥支行', phone: '1234576788', name: '李四?', addr: '水星', date: '2018-09-09', manager: '牛皮', mid: '124545656' },
-      { id: '1234567789', branch: '合肥支行', phone: '1234576788', name: '王五?', addr: '木星', date: '2016-06-06', manager: '牛腿', mid: '124545656' },
+    this.data = [
+      { id: '1234567789', phone: '1234576788', name: '张三?', addr: '火星', rname: 'jack', rphone: '201808', remail: 'char@ms.com', rr: '父子' },
+      { id: '1234567789', phone: '1234576788', name: '例三?', addr: '火星', rname: 'jack', rphone: '201808', remail: 'char@ms.com', rr: '父子' },
+      { id: '1234567789', phone: '1234576788', name: '猪头?', addr: '火星', rname: 'jack', rphone: '201808', remail: 'char@ms.com', rr: '父子' },
     ];
+    return this.data;
   }
 
-  deleteEmplyee = (id) => {
+  deleteClient = (id) => {
     // 删除主键为name的元组
     for (var i = 0; i < this.data.length; i++) {
       if (this.data[i].id === id) {
@@ -104,4 +105,4 @@ class Emplyee {
   }
 }
 
-export default Emplyee;
+export default Client;

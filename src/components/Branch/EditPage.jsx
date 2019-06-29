@@ -20,11 +20,13 @@ class EditForm extends Component {
       }, 1000);
       if (!err) {
         console.log('Received values of form: ', values);
-        message.success('录入成功');
+        this.props.onChange(values);
+        message.success('修改成功');
       } else {
-        message.error('录入失败！');
+        message.error('修改失败！');
       }
     });
+    this.props.form.resetFields();
   };
 
   render() {
@@ -65,8 +67,8 @@ class EditForm extends Component {
                 defaultValue="rmb"
                 style={{ width: '32%', }}
               >
-                <Option style={{ color: 'rgba(0,0,0,.25)' }} value="rmb">RMB</Option>
-                <Option style={{ color: 'rgba(0,0,0,.25)' }} value="dollar">USD</Option>
+                <Option style={{ color: 'rgba(0,0,0,.25)' }} value="RMB">RMB</Option>
+                <Option style={{ color: 'rgba(0,0,0,.25)' }} value="USD">USD</Option>
               </Select>
             )}
           </span>

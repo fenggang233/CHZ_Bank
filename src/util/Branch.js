@@ -10,6 +10,11 @@ var data = [
   { name: 'CHZ Branch 魔都支行3', city: '上海', assets: 20000, type: 'USD' },
 ];
 
+const cityList = [
+  "合肥",
+  "北京",
+  "上海"];
+
 class Branch{
   constructor(props){
     if (props === null){
@@ -38,8 +43,8 @@ class Branch{
     // 输入：要添加的支行  list[obj]
     // 功能：添加元组到数据库，
     // 返回错误：数据库方面的错误
-    this.data = branches.concat(this.data);
-    this.props.sum += branches.lenght;
+    this.data = [ branches ].concat(this.data);
+    this.props.sum += 1;
   }
 
   changeBranch = (oldKey, newBranch) => {
@@ -53,17 +58,39 @@ class Branch{
     }
   }
 
-  searchBranch = (keys) => {
+  searchBranch = (name, assets, city) => {
     // 对数据进行查询，
+    return [
+      { name: '肥科支行3', city: '合肥', assets: 12000, type: 'RMB' },
+      { name: '哈哈支行3', city: '北京', assets: 18000, type: 'RMB' },
+      { name: '魔都支行3', city: '上海', assets: 20000, type: 'USD' },
+    ]
   }
 
   deleteBranch = (name) => {
+    // 删除主键为name的元组
     for (var i = 0; i < this.data.length; i++) {
       if (this.data[i].name === name) {
         this.data.splice(i, 1);
         this.sum--;
         break;
       }
+    }
+  }
+
+  genCityList = () => {
+    // 相当于一个查询，返回所有城市就行了
+    return cityList;
+  }
+
+  getAssetsStatByCity = () => {
+    // 统计不同城市的资产
+    return {
+      series: [44, 55, 13, 33],
+      labels: ['合肥', '北京', '上海', '深圳'],
+      max: {city: '北京', assets: 55},
+      min: {city: '上海', assets: 13},
+      sum: 233
     }
   }
 }

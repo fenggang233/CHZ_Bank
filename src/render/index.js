@@ -1,7 +1,3 @@
-import Branch from '../util/Branch';
-
-const branch = new Branch();
-
 const chzBankReducer = (state, action) => {
   if (!state || action.type === 'INIT') {
     return {
@@ -25,7 +21,7 @@ const chzBankReducer = (state, action) => {
           },
         ]
       }
-    case 'ADD_DATA':
+    case 'ADD':
       return {
         ...state,
         debugData: [...state.debugData, action.data]

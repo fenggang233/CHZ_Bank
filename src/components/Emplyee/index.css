@@ -36,3 +36,15 @@
 .emplyee-list:hover{
   box-shadow: 0 0 10px #ddd; 
 }
+
+.emplyee-tab{
+  width: 160px;
+  text-align: center;
+  display: flex;
+  align-self: center;
+}
+
+.emplyee-tab-icon{
+  font-size: 20px; 
+  margin-right: 5px; 
+}

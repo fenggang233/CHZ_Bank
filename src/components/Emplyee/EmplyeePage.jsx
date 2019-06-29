@@ -1,10 +1,17 @@
 import React, { Component } from 'react';
-import { Icon, Divider, List, Avatar, Popconfirm, Skeleton, Button } from 'antd';
+import { Icon, Divider, List, Avatar, Popconfirm, Skeleton, Button, Tooltip, Modal } from 'antd';
 import Chart from "react-apexcharts";
 
-import './index.css';
+import Emplyee from '../../util/Emplyees';
+import SearchPage from './SearchPage';
+import AddPage from './AddPage';
+import EditPage from './EditPage';
 
-import SearchPage from '../Branch/SearchPage';
+import './index.css';
+import logo from "../../assets/logo.svg";
+import logoNameB from "../../assets/logo-name-black.svg";
+
+const emplyee = new Emplyee();
 
 let colors = [
   '#ED6D79',
@@ -14,36 +21,36 @@ let colors = [
   '#8577CF',
 ]
 
+const o2 = emplyee.getEmplyeeStatByPos();
 const donut_option = {
   chart: {
     type: 'donut'
   },
-  series: [44, 55],
-  labels: ['员工', '经理']
+  series: o2.series,
+  labels: o2.labels
 }
+
+const Logo = (
+  <div className="logo-mini">
+    <img alt='logo' className="logo-svg-mini" src={logo} />
+    <img alt='logo-name'
+      className="logo-name-svg-mini"
+      src={logoNameB} />
+  </div>
+);
+
+const option1 = emplyee.getEmplyeeStatByCity();
 
 class CollapsePage extends Component {
   state = {
-    options: {
-      chart: {
-        id: "basic-bar"
-      },
-      xaxis: {
-        categories: [1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003]
-      }
-    },
-    series: [
-      {
-        name: "¥/$",
-        data: [30, 40, 45, 50, 49, 60, 70, 91, 40, 45, 50, 49]
-      }
-    ],
+    options: option1.option,
+    series: option1.series,
     initLoading: true,
     loading: false,
     addVisible: false,
     editVisible: false,
     count: 3,
-    list: [],
+    list: emplyee.getEmplyee(),
   };
 
   componentDidMount() {
@@ -52,8 +59,90 @@ class CollapsePage extends Component {
     })
   }
 
+  showAddModal = () => {
+    this.setState({
+      addVisible: true,
+    });
+  };
+
+  handleAddCancel = () => {
+    this.setState({
+      addVisible: false
+    });
+  };
+
+  handleEditCancel = () => {
+    this.setState({
+      editVisible: false,
+    });
+  };
+
+  onUpdate = (newEmplyee) => {
+    emplyee.addEmplyee(newEmplyee);
+    this.setState({
+      list: this.state.list.concat(newEmplyee),
+    })
+  }
+
+  onChange = (newInfo) => {
+    var { list, oldIndex, oldId } = this.state;
+    emplyee.changeEmplyee(oldId, newInfo);
+    list[oldIndex] = newInfo;
+    this.setState({
+      list: list
+    })
+  }
+
+  onSearch = (keys) => {
+    this.setState({
+      list: emplyee.searchEmplyee(keys)
+    })
+  }
+
+  onLoadMore = () => {
+    this.setState({
+      loading: true,
+      list: this.state.list.concat([...new Array(this.state.count)].map(() => ({
+        loading: true,
+        name: {}
+      }))),
+    });
+    setTimeout(() => {
+      this.setState({
+        loading: false,
+        list: this.state.list.slice(0,
+          this.state.list.length - this.state.count)
+          .concat(emplyee.getEmplyee()),
+      });
+    }, 500);
+  };
+
+  handleEditCancel = () => {
+    this.setState({
+      editVisible: false,
+    });
+  };
+
+  handleDelete = (item, index) => {
+    var l = this.state.list;
+    l.splice(index, 1);
+    this.setState({
+      list: l
+    })
+    emplyee.deleteEmplyee(item.id);
+  }
+
+  handleEdit = (item, index) => {
+    this.setState({
+      editVisible: true,
+      oldInfo: JSON.stringify(item),
+      oldIndex: index,
+      oldId: item.id
+    });
+  };
+
   render() {
-    const { initLoading, loading, list } = this.state;
+    const { initLoading, loading, list, addVisible, editVisible } = this.state;
     const loadMore =
       !initLoading && !loading ? (
         <div style={{ textAlign: 'center', marginTop: 12, height: 32, lineHeight: '32px' }} >
@@ -65,6 +154,7 @@ class CollapsePage extends Component {
           </Button>
         </div>
       ) : null;
+
     return (
       <div className="root-page" id="emplyee-page">
         <div className="emplyee-top-card">
@@ -101,7 +191,7 @@ class CollapsePage extends Component {
             <div>
               <h3>CHZ Bank 员工列表</h3>
               <Divider />
-              <SearchPage />
+              <SearchPage onSearch={ this.onSearch } />
             </div>
           }
           className="emplyee-list"
@@ -112,12 +202,12 @@ class CollapsePage extends Component {
           renderItem={(item, i) => (
             <List.Item actions={[
               <Popconfirm placement="top" title={"确定编辑？"}
-                onConfirm={this.showEditModal}
+                onConfirm={this.handleEdit.bind(this, item, i)}
                 okText="确定" cancelText="取消">
                 <Icon className="func-icon" type="edit" />
               </Popconfirm>,
               <Popconfirm placement="top" title={"确定删除？"}
-                onConfirm={this.handleDeleteBranch.bind(this, item.name, i)}
+                onConfirm={this.handleDelete.bind(this, item, i)}
                 okText="确定" cancelText="取消">
                 <Icon className="func-icon" type="delete" />
               </Popconfirm>,
@@ -126,20 +216,56 @@ class CollapsePage extends Component {
                 <List.Item.Meta
                   avatar={
                     <Avatar style={{ backgroundColor: '#f5f5f5' }}>
-                      <Icon type="bank" style={{ fontSize: 18 }}
+                      <Icon type="smile" style={{ fontSize: 18, marginTop: 7 }}
                         theme="twoTone"
                         twoToneColor={colors[i % 5]} />
                     </Avatar>
                   }
-                  title={<a href="https://ant.design">{item.name}</a>}
-                  description={item.city}
+                  title={item.name}
+                  description={item.branch}
                 />
-                <div>{item.assets}</div>
+                <div style={{ display: 'flex' }}>
+                  <div className="emplyee-tab">
+                    <Tooltip title="身份证">
+                      <Icon type="idcard" theme="twoTone" className="emplyee-tab-icon" />{item.id}
+                    </Tooltip>
+                  </div>
+                  <div className="emplyee-tab">
+                    <Tooltip title="联系电话">
+                      <Icon type="phone" theme="twoTone" className="emplyee-tab-icon" />{item.phone}
+                    </Tooltip>
+                  </div>
+                  <div className="emplyee-tab">
+                    <Tooltip title="家庭住址">
+                      <Icon type="home" theme="twoTone" className="emplyee-tab-icon" />{item.addr}
+                    </Tooltip>
+                  </div>
+                  <div className="emplyee-tab">
+                    <Tooltip title="入职日期，已入职8年">
+                      <Icon type="calendar" theme="twoTone" className="emplyee-tab-icon" />{item.date}
+                    </Tooltip>
+                  </div>
+                  <div className="emplyee-tab">
+                    <Tooltip title={"经理，ID: " + item.mid}>
+                      <Icon type="contacts" theme="twoTone" className="emplyee-tab-icon" />{item.manager}
+                    </Tooltip>
+                  </div>
+                </div>
               </Skeleton>
             </List.Item>
           )}
         />
-        </div>
+        <Modal
+          visible={addVisible} title={Logo} footer={null}
+          onCancel={this.handleAddCancel} style={{ position: "relative", zIndex: 9999 }} >
+          <AddPage onUpdate={this.onUpdate} />
+        </Modal>
+        <Modal
+          visible={editVisible} title={Logo} footer={null}
+          onCancel={this.handleEditCancel} style={{ position: "relative", zIndex: 9999 }} >
+          <EditPage onChange={this.onChange} oldInfo={ this.state.oldInfo } />
+        </Modal>
+      </div>
     )
   }
 }
