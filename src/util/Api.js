@@ -7,7 +7,6 @@ class API{
         var options = {
             method: 'GET',
             uri: api_host + point,
-            form: data,
             json: true
         };
         rp(options)
