@@ -3,11 +3,12 @@ var rp = require('request-promise');
 const api_host = 'http://10.70.0.125:5000/'
 
 class API{
-    static GET(point, callback) {
+    static GET(point, callback, qs={}) {
         var options = {
             method: 'GET',
             uri: api_host + point,
-            json: true
+            json: true,
+            qs: qs
         };
         rp(options)
             .then(function (parsedBody) {
