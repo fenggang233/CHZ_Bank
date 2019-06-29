@@ -16,26 +16,13 @@ const cityList = [
   "上海"];
 
 class Branch{
-  constructor(props){
-    if (props === null){
-      this.props = props
-    } else {
-      this.props = {
-        count: 3,
-      }
-    }
-    this.props = {
-      ...this.props,
-      sum: 0
-    }
+  constructor(){
     this.data = data;
   }
 
   getBranches = () => {
     // 每次只顺序返回count个，count由程序员初始化时设置
     // 还应该返回各种错误：已经全部返回，数据库错误等
-    var data = this.data.slice(this.props.sum, this.props.sum + this.props.count);
-    this.props.sum = this.props.sum + this.props.count;
     return data;
   }
 

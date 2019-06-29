@@ -71,24 +71,6 @@ class CollapsePage extends Component {
     })
   }
 
-  onLoadMore = () => {
-    this.setState({
-      loading: true,
-      list: this.state.list.concat([...new Array(this.state.count)].map(() => ({ 
-        loading: true, 
-        name: {} 
-      }))),
-    });
-    setTimeout(()=>{
-      this.setState({
-        loading: false,
-        list: this.state.list.slice(0, 
-          this.state.list.length - this.state.count)
-          .concat(branch.getBranches()),
-      });
-    }, 500);
-  };
-
   onUpdate = (newBranch) => {
     branch.addBranch(newBranch);
     this.setState({
