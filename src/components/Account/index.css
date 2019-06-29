@@ -1,0 +1,13 @@
+.account0-tab{
+  width: 140px;
+  text-align: center;
+  display: flex;
+  align-self: center;
+}
+
+.account1-tab{
+  width: 160px;
+  text-align: center;
+  display: flex;
+  align-self: center;
+}

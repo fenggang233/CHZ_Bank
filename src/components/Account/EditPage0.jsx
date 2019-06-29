@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
-import { Form, Icon, Input, Button, message, Row, Divider } from 'antd';
+import { Form, Icon, Input, Button, message, Row, DatePicker, Select } from 'antd';
 
 import './index.css';
+import locale from 'antd/lib/date-picker/locale/zh_CN';
 
 const InputGroup = Input.Group;
+const { Option } = Select;
 
 class EditForm extends Component {
   state = {
@@ -42,11 +44,11 @@ class EditForm extends Component {
       <Form onSubmit={this.handleSubmit} className="login-form">
         <Row gutter={24} style={{ marginTop: 20 }}>
           <InputGroup compact={true} onPressEnter={e => { console.log(e) }}>
-            {getFieldDecorator('name', {
+            {getFieldDecorator('aid', {
             })(
               <Input style={{ width: "40%" }}
-                prefix={<Icon type="smile" style={{ color: 'rgba(0,0,0,.25)' }} />}
-                placeholder={oldInfo.name}
+                prefix={<Icon type="account-book" style={{ color: 'rgba(0,0,0,.25)' }} />}
+                placeholder={oldInfo.aid}
               />,
             )}
             {getFieldDecorator('id', {
@@ -60,62 +62,83 @@ class EditForm extends Component {
         </Row>
         <Row gutter={24} style={{ marginTop: 20 }}>
           <InputGroup compact={true} onPressEnter={e => { console.log(e) }}>
-            {getFieldDecorator('phone', {
+            {getFieldDecorator('branch', {
             })(
               <Input style={{ width: "40%" }}
-                prefix={<Icon type="phone" style={{ color: 'rgba(0,0,0,.25)' }} />}
-                placeholder={oldInfo.phone}
+                prefix={<Icon type="bank" style={{ color: 'rgba(0,0,0,.25)' }} />}
+                placeholder={oldInfo.branch}
               />,
             )}
-            {getFieldDecorator('addr', {
+            {getFieldDecorator('rate', {
             })(
               <Input style={{ width: "60%" }}
-                prefix={<Icon type="home" style={{ color: 'rgba(0,0,0,.25)' }} />}
-                placeholder={oldInfo.addr}
-              />,
-            )}
-          </InputGroup>
-        </Row>
-        <Divider />
-        <Row gutter={24} style={{ marginTop: 20 }}>
-          <InputGroup compact={true} onPressEnter={e => { console.log(e) }}>
-            {getFieldDecorator('rname', {
-            })(
-              <Input style={{ width: "40%" }}
-                prefix={<Icon type="smile" style={{ color: 'rgba(0,0,0,.25)' }} />}
-                placeholder={oldInfo.rname}
-              />,
-            )}
-            {getFieldDecorator('rphone', {
-            })(
-              <Input style={{ width: "60%" }}
-                prefix={<Icon type="phone" style={{ color: 'rgba(0,0,0,.25)' }} />}
-                placeholder={oldInfo.rphone}
+                prefix={<Icon type="stock" style={{ color: 'rgba(0,0,0,.25)' }} />}
+                placeholder={oldInfo.rate}
               />,
             )}
           </InputGroup>
         </Row>
         <Row gutter={24} style={{ marginTop: 20 }}>
           <InputGroup compact={true} onPressEnter={e => { console.log(e) }}>
-            {getFieldDecorator('remail', {
+            {getFieldDecorator('balance', {
             })(
               <Input style={{ width: "40%" }}
-                prefix={<Icon type="mail" style={{ color: 'rgba(0,0,0,.25)' }} />}
-                placeholder={oldInfo.remail}
+                prefix={<Icon type="pay-circle" style={{ color: 'rgba(0,0,0,.25)' }} />}
+                placeholder={oldInfo.balance}
               />,
             )}
-            {getFieldDecorator('rr', {
+            {getFieldDecorator('type', {
+            })(<Select style={{ width: '60%' }} placeholder="币种">
+              <Option value="USD">USD</Option>
+              <Option value="RMB">RMB</Option>
+            </Select>)}
+          </InputGroup>
+        </Row>
+        <Row gutter={24} style={{ marginTop: 20 }}>
+          <InputGroup compact={true} onPressEnter={e => { console.log(e) }}>
+            {getFieldDecorator('openDate', {
             })(
-              <Input style={{ width: "60%" }}
-                prefix={<Icon type="usergroup-add" style={{ color: 'rgba(0,0,0,.25)' }} />}
-                placeholder={oldInfo.rr}
+              <DatePicker
+                locale={locale}
+                style={{ width: "50%" }}
+                dateRender={current => {
+                  const style = {};
+                  if (current.date() === 1) {
+                    style.border = '1px solid #1890ff';
+                    style.borderRadius = '50%';
+                  }
+                  return (
+                    <div className="ant-calendar-date" style={style}>
+                      {current.date()}
+                    </div>
+                  );
+                }}
+              />,
+            )}
+            {getFieldDecorator('latestDate', {
+            })(
+              <DatePicker
+                locale={locale}
+                style={{ width: "50%" }}
+                dateRender={current => {
+                  const style = {};
+                  if (current.date() === 1) {
+                    style.border = '1px solid #1890ff';
+                    style.borderRadius = '50%';
+                  }
+                  return (
+                    <div className="ant-calendar-date" style={style}>
+                      {current.date()}
+                    </div>
+                  );
+                }}
               />,
             )}
           </InputGroup>
         </Row>
         <Row gutter={24} style={{ marginTop: 20, marginBottom: 20 }}>
           <Button type="primary" loading={this.state.loading} htmlType="submit" className="login-form-button">
-            修改
+            修改储蓄账户
           </Button>
         </Row>
       </Form>

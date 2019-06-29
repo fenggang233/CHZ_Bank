@@ -1,0 +1,46 @@
+#client-page {
+  margin: 24px 16px;
+  padding: 24px;
+  background: #fff;
+  min-height: 630px;
+}
+
+.coll-content{
+  border-top: solid #D9D9D9 0.5px;
+  display: flex;
+  align-items: center;
+}
+
+.client-card {
+  border-radius: 5px; 
+  box-shadow: 0 0 5px #d5d5d5; 
+  padding: 25px;
+}
+
+.client-card:hover {
+  box-shadow: 0 0 10px #ddd; 
+}
+
+.client-top-card {
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.list{
+  border-radius: 5px; 
+  box-shadow: 0 0 5px #d5d5d5;
+  padding: 25px;
+}
+
+.client-tab{
+  width: 200px;
+  text-align: center;
+  display: flex;
+  align-self: center;
+}
+
+.client-tab-icon{
+  font-size: 20px; 
+  margin-right: 5px; 
+}

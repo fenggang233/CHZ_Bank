@@ -1,9 +1,10 @@
-import { Form, Row, Col, Input, Button } from 'antd';
+import { Form, Row, Col, Input, Button, Select } from 'antd';
 import React, { Component } from 'react';
 
 import Branch from '../../util/Branch';
 
 const InputGroup = Input.Group;
+const { Option } = Select;
 const branch = new Branch();
 
 class AdvancedSearchForm extends Component {
@@ -35,18 +36,16 @@ class AdvancedSearchForm extends Component {
       <Form className="ant-advanced-search-form" onSubmit={this.handleSearch}>
         <Row gutter={24}>
           <InputGroup compact={true} onPressEnter={e => { console.log(e) }}>
-            {getFieldDecorator('id', {
-            })(<Input style={{ width: '20%' }} placeholder="身份证号" />)}
-            {getFieldDecorator('add', {
-            })(<Input style={{ width: '16%' }} placeholder="地点" />)}
-            {getFieldDecorator('name', {
-            })(<Input style={{ width: '16%' }} placeholder="姓名" />)}
-            {getFieldDecorator('email', {
-            })(<Input style={{ width: '16%' }} placeholder="邮件" />)}
-            {getFieldDecorator('rr', {
-            })(<Input style={{ width: '16%' }} placeholder="关系" />)}
-            {getFieldDecorator('phone', {
-            })(<Input style={{ width: '16%' }} placeholder="电话" />)}
+            {getFieldDecorator('branch', {
+            })(<Select style={{ width: '20%' }} placeholder="支行">
+              {
+                this.state.cityList.map((city, i) => {
+                  return (
+                    <Option key={i} value={city}>{city}</Option>
+                  )
+                })
+              }
+            </Select>)}
           </InputGroup>
         </Row>
         <Row>

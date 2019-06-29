@@ -7,6 +7,7 @@ import AddPage from './AddPage';
 import EditPage from './EditPage';
 
 import Branch from '../../util/Branch';
+import API from '../../util/Api';
 
 import './index.css';
 import logo from "../../assets/logo.svg";
@@ -55,13 +56,18 @@ class CollapsePage extends Component {
   componentWillMount() {
     const stat = branch.getAssetsStatByCity(); 
     this.setState({
-      list: branch.getBranches(),
       donut_option: {
         ...this.state.donut_option,
         series: stat.series,
         labels: stat.labels
       },
       stat: stat
+    });
+
+    API.GET('branch', (data) => {
+      this.setState({
+        list: data
+      })
     })
   }
 

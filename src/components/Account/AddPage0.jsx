@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
-import { Form, Icon, Input, Button, message, Row, DatePicker } from 'antd';
+import { Form, Icon, Input, Button, message, Row, DatePicker, Select } from 'antd';
 
 import './index.css';
 import locale from 'antd/lib/date-picker/locale/zh_CN';
 
 const InputGroup = Input.Group;
+const { Option } = Select;
 
 // eslint-disable-next-line no-extend-native
 Date.prototype.format = function (fmt) {
@@ -34,7 +35,7 @@ class AddForm extends Component {
     loading: false,
     logVisible: false,
   }
-
+  
   handleSubmit = e => {
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
@@ -43,8 +44,9 @@ class AddForm extends Component {
         this.setState({ loading: false });
       }, 1000);
       if (!err) {
-        values['date'] = values['date'].format("YYYY-MM-DD");
         console.log('Received values of form: ', values);
+        values['openDate'] = values['openDate'].format("YYYY-MM-DD");
+        values['latestDate'] = values['latestDate'].format("YYYY-MM-DD");
         this.props.onUpdate(values);
         message.success('录入成功');
       } else {
@@ -54,6 +56,7 @@ class AddForm extends Component {
     this.props.form.resetFields();
   };
 
+  //   { id: '1234567789', branch: '1234576788', aid: 'F996ICU', overdraft: '1333', balance: '13343', openDate: '2018-08-09', latestDate: '2019-08-09' },
   render() {
     const { getFieldDecorator } = this.props.form;
     return (
@@ -61,18 +64,16 @@ class AddForm extends Component {
         <Row gutter={24} style={{ marginTop: 20 }}>
           <InputGroup compact={true} onPressEnter={e => { console.log(e) }}>
             {getFieldDecorator('name', {
-              rules: [{ required: true, message: '请输入名字！' }],
             })(
               <Input style={{ width: "40%" }}
-                prefix={<Icon type="smile" style={{ color: 'rgba(0,0,0,.25)' }} />}
-                placeholder="姓名"
+                prefix={<Icon type="account-book" style={{ color: 'rgba(0,0,0,.25)' }} />}
+                placeholder="账号"
               />,
             )}
             {getFieldDecorator('id', {
-              rules: [{ required: true, message: '请输入身份证号！' }],
             })(
               <Input style={{ width: "60%" }}
-                prefix={<Icon type="idcard" style={{ color: 'rgba(0,0,0,.25)'}} />}
+                prefix={<Icon type="idcard" style={{ color: 'rgba(0,0,0,.25)' }} />}
                 placeholder="身份证号"
               />,
             )}
@@ -80,20 +81,64 @@ class AddForm extends Component {
         </Row>
         <Row gutter={24} style={{ marginTop: 20 }}>
           <InputGroup compact={true} onPressEnter={e => { console.log(e) }}>
-            {getFieldDecorator('phone', {
-              rules: [{ required: true, message: '请输入电话！' }],
+            {getFieldDecorator('branch', {
             })(
               <Input style={{ width: "40%" }}
-                prefix={<Icon type="phone" style={{ color: 'rgba(0,0,0,.25)' }} />}
-                placeholder="电话"
+                prefix={<Icon type="bank" style={{ color: 'rgba(0,0,0,.25)' }} />}
+                placeholder="支行"
               />,
             )}
-            {getFieldDecorator('date', {
-              rules: [{ required: true, message: '请选择日期！' }],
+            {getFieldDecorator('rate', {
+            })(
+              <Input style={{ width: "60%" }}
+                prefix={<Icon type="stock" style={{ color: 'rgba(0,0,0,.25)' }} />}
+                placeholder="利率"
+              />,
+            )}
+          </InputGroup>
+        </Row>
+        <Row gutter={24} style={{ marginTop: 20 }}>
+          <InputGroup compact={true} onPressEnter={e => { console.log(e) }}>
+            {getFieldDecorator('balance', {
+            })(
+              <Input style={{ width: "40%" }}
+                prefix={<Icon type="pay-circle" style={{ color: 'rgba(0,0,0,.25)' }} />}
+                placeholder="余额"
+              />,
+            )}
+            {getFieldDecorator('type', {
+            })(<Select style={{ width: '60%' }} placeholder="币种">
+              <Option value="USD">USD</Option>
+              <Option value="RMB">RMB</Option>
+            </Select>)}
+          </InputGroup>
+        </Row>
+        <Row gutter={24} style={{ marginTop: 20 }}>
+          <InputGroup compact={true} onPressEnter={e => { console.log(e) }}>
+            {getFieldDecorator('openDate', {
             })(
               <DatePicker
                 locale={locale}
-                style={{ width: "60%" }}
+                style={{ width: "50%" }}
+                dateRender={current => {
+                  const style = {};
+                  if (current.date() === 1) {
+                    style.border = '1px solid #1890ff';
+                    style.borderRadius = '50%';
+                  }
+                  return (
+                    <div className="ant-calendar-date" style={style}>
+                      {current.date()}
+                    </div>
+                  );
+                }}
+              />,
+            )}
+            {getFieldDecorator('latestDate', {
+            })(
+              <DatePicker
+                locale={locale}
+                style={{ width: "50%" }}
                 dateRender={current => {
                   const style = {};
                   if (current.date() === 1) {
@@ -110,39 +155,9 @@ class AddForm extends Component {
             )}
           </InputGroup>
         </Row>
-        <Row gutter={24} style={{ marginTop: 20 }}>
-          {getFieldDecorator('addr', {
-            rules: [{ required: true, message: '请输入地址！' }],
-          })(
-            <Input 
-              prefix={<Icon type="home" style={{ color: 'rgba(0,0,0,.25)' }} />}
-              placeholder="家庭地址"
-            />,
-          )}
-        </Row>
-        <Row gutter={24} style={{ marginTop: 20 }}>
-          <InputGroup compact={true} onPressEnter={e => { console.log(e) }}>
-            {getFieldDecorator('manager', {
-              rules: [{ required: true, message: '请输入名字！' }],
-            })(
-              <Input style={{ width: "40%" }}
-                prefix={<Icon type="smile" style={{ color: 'rgba(0,0,0,.25)' }} />}
-                placeholder="经理姓名"
-              />,
-            )}
-            {getFieldDecorator('mid', {
-              rules: [{ required: true, message: '请输入身份证号！' }],
-            })(
-              <Input style={{ width: "60%" }}
-                prefix={<Icon type="idcard" style={{ color: 'rgba(0,0,0,.25)' }} />}
-                placeholder="经理身份证号"
-              />,
-            )}
-          </InputGroup>
-        </Row>
         <Row gutter={24} style={{ marginTop: 20, marginBottom: 20 }}>
           <Button type="primary" loading={this.state.loading} htmlType="submit" className="login-form-button">
-            录入
+            添加储蓄账户
           </Button>
         </Row>
       </Form>

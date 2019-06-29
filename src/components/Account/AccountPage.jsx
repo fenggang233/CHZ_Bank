@@ -6,9 +6,12 @@ import logo from "../../assets/logo.svg";
 import logoNameB from "../../assets/logo-name-black.svg";
 
 import Account from '../../util/Account';
-import SearchPage from './SearchPage';
-import AddPage from './AddPage';
-import EditPage from './EditPage';
+import SearchPage0 from './SearchPage0';
+import SearchPage1 from './SearchPage1';
+import AddPage0 from './AddPage0';
+import AddPage1 from './Addpage1';
+import EditPage0 from './EditPage0';
+import EditPage1 from './EditPage1';
 
 let colors = [
   '#ED6D79',
@@ -36,14 +39,15 @@ class AccountPage extends Component {
     addVisible: false,
     editVisible: false,
     count: 3,
-    list: [],
-    type: 0
+    list0: [],
+    list1: [],
+    type: '0'
   };
 
-  componentDidMount() {
+  componentWillMount() {
     this.setState({
       initLoading: false,
-      list: account.getAccount(this.props.type)
+      list0: account.getAccount('0')
     })
   }
 
@@ -65,45 +69,42 @@ class AccountPage extends Component {
     });
   };
 
-  onUpdate = (newClient) => {
-    account.addClient(newClient);
+  onUpdate0 = (newClient) => {
+    // account.addClient(newClient);
     this.setState({
-      list: this.state.list.concat(newClient),
+      list0: this.state.list0.concat(newClient),
+    })
+  }
+
+  onUpdate1 = (newClient) => {
+    // account.addClient(newClient);
+    this.setState({
+      list1: this.state.list1.concat(newClient),
     })
   }
 
   onChange = (newInfo) => {
-    var { list, oldIndex, oldId } = this.state;
-    account.changeClient(oldId, newInfo);
-    list[oldIndex] = newInfo;
-    this.setState({
-      list: list
-    })
+    var { list, oldIndex, oldId, type } = this.state;
+    if (type === '0') {
+      account.changeClient(oldId, newInfo, '0');
+      list[oldIndex] = newInfo;
+      this.setState({
+        list0: list
+      })
+    } else {
+      account.changeClient(oldId, newInfo, '1');
+      list[oldIndex] = newInfo;
+      this.setState({
+        list1: list
+      })
+    }
   }
 
   onSearch = (keys) => {
     this.setState({
-      list: account.searchClient(keys)
+      list0: account.searchClient(keys)
     })
   }
-
-  onLoadMore = () => {
-    this.setState({
-      loading: true,
-      list: this.state.list.concat([...new Array(this.state.count)].map(() => ({
-        loading: true,
-        name: {}
-      }))),
-    });
-    setTimeout(() => {
-      this.setState({
-        loading: false,
-        list: this.state.list.slice(0,
-          this.state.list.length - this.state.count)
-          .concat(account.getAccount(this.props.type)),
-      });
-    }, 500);
-  };
 
   handleEditCancel = () => {
     this.setState({
@@ -112,12 +113,19 @@ class AccountPage extends Component {
   };
 
   handleDelete = (item, index) => {
-    var l = this.state.list;
-    l.splice(index, 1);
-    this.setState({
-      list: l
-    })
-    account.deleteClient(item.id);
+    if (this.state.type === '0'){
+      var l = this.state.list0;
+      l.splice(index, 1);
+      this.setState({
+        list0: l
+      })
+    } else {
+      l = this.state.list1;
+      l.splice(index, 1);
+      this.setState({
+        list1: l
+      })
+    }
   }
 
   handleEdit = (item, index) => {
@@ -127,20 +135,25 @@ class AccountPage extends Component {
       oldInfo: JSON.stringify(item),
       oldIndex: index,
       oldId: item.id,
-      type: "0"
     });
   };
 
   handleTypeChange = e => {
-    console.log(e.target.value)
-    this.setState({ 
-      type: e.target.value,
-      list: account.getAccount(e.target.value)
-    });
+    if (e.target.value === '0') {
+      this.setState({
+        type: '0',
+        list0: account.getAccount('0')
+      });
+    } else {
+      this.setState({
+        type: '1',
+        list1: account.getAccount('1')
+      });
+    }
   };
 
   render() {
-    const { initLoading, loading, list, addVisible, editVisible } = this.state;
+    const { initLoading, loading, addVisible, editVisible } = this.state;
     const loadMore =
       !initLoading && !loading ? (
         <div style={{ textAlign: 'center', marginTop: 12, height: 32, lineHeight: '32px' }} >
@@ -166,14 +179,19 @@ class AccountPage extends Component {
                 <Radio.Button value="1">支票账户</Radio.Button>
               </Radio.Group>
               <Divider />
-              <SearchPage onSearch={this.onSearch} />
+              <div style={{ display: this.state.type === '0' ? '' : 'none' }}>
+                <SearchPage0 onSearch={this.onSearch} />
+              </div>
+              <div style={{ display: this.state.type === '1' ? '' : 'none' }}>
+                <SearchPage1 onSearch={this.onSearch} />
+              </div> 
             </div>
           }
           className="list"
           loading={initLoading}
           itemLayout="horizontal"
           loadMore={loadMore}
-          dataSource={list}
+          dataSource={this.state.type === '0' ? this.state.list0 : this.state.list1 }
           renderItem={(item, i) => (
             <List.Item actions={[
               <Popconfirm placement="top" title={"确定编辑？"}
@@ -191,48 +209,74 @@ class AccountPage extends Component {
                 <List.Item.Meta
                   avatar={
                     <Avatar style={{ backgroundColor: '#f5f5f5' }}>
-                      <Icon type="bank" style={{ fontSize: 18 }}
+                      <Icon type="account-book" style={{ fontSize: 18 }}
                         theme="twoTone"
                         twoToneColor={colors[i % 5]} />
                     </Avatar>
                   }
-                  title={item.name}
+                  title={item.aid}
+                  description={item.id}
                 />
-                <div style={{ display: 'flex' }}>
-                  <div className="client-tab">
-                    <Tooltip title="身份证">
-                      <Icon type="idcard" theme="twoTone" className="client-tab-icon" />{item.id}
+                
+                <div style={{ display: this.state.type === '0' ? 'flex' : 'none' }}>
+                  <div className="account0-tab">
+                    <Tooltip title="开户支行">
+                      <Icon type="bank" theme="twoTone" className="client-tab-icon" />{item.branch}
                     </Tooltip>
                   </div>
-                  <div className="client-tab">
-                    <Tooltip title="联系电话">
-                      <Icon type="phone" theme="twoTone" className="client-tab-icon" />{item.phone}
+                  <div className="account0-tab">
+                    <Tooltip title="余额">
+                      <Icon type="pay-circle" className="client-tab-icon" />{item.balance}
                     </Tooltip>
                   </div>
-                  <div className="client-tab">
-                    <Tooltip title="家庭住址">
-                      <Icon type="home" theme="twoTone" className="client-tab-icon" />{item.addr}
+                  <div className="account0-tab">
+                    <Tooltip title="币种">
+                      <Icon type="money-collect" className="client-tab-icon" />{item.type}
                     </Tooltip>
                   </div>
-                  <div className="client-tab">
-                    <Tooltip title={<div>
-                      <div>
-                        <Icon type="user" className="client-tab-icon" />{item.rname}
-                      </div>
-                      <div>
-                        <Icon type="phone" className="client-tab-icon" />{item.rphone}
-                      </div>
-                      <div>
-                        <Icon type="mail" className="client-tab-icon" />{item.remail}
-                      </div>
-                      <div>
-                        <Icon type="usergroup-add" className="client-tab-icon" />{item.rr}
-                      </div>
-                    </div>}>
-                      <Icon type="contacts" theme="twoTone" className="client-tab-icon" />联系人信息
+                  <div className="account0-tab">
+                    <Tooltip title="利率">
+                      <Icon type="stock" className="client-tab-icon" />{item.rate}
                     </Tooltip>
                   </div>
-                </div>
+                  <div className="account0-tab">
+                    <Tooltip title="开户时间">
+                      <Icon type="calendar" theme="twoTone" className="client-tab-icon" />{item.openDate}
+                    </Tooltip>
+                  </div>
+                  <div className="account0-tab">
+                    <Tooltip title="最近访问时间">
+                      <Icon type="calendar" theme="twoTone" className="client-tab-icon" />{item.latestDate}
+                    </Tooltip>
+                  </div>
+                </div> 
+                <div style={{ display: this.state.type === '1' ? 'flex' : 'none' }}>
+                  <div className="account1-tab">
+                    <Tooltip title="开户支行">
+                      <Icon type="bank" theme="twoTone" className="client-tab-icon" />{item.branch}
+                    </Tooltip>
+                  </div>
+                  <div className="account1-tab">
+                    <Tooltip title="透支额">
+                      <Icon type="pay-circle" className="client-tab-icon" />{item.overdraft}
+                    </Tooltip>
+                  </div>
+                  <div className="account1-tab">
+                    <Tooltip title="余额">
+                      <Icon type="pay-circle" className="client-tab-icon" />{item.balance}
+                    </Tooltip>
+                  </div>
+                  <div className="account1-tab">
+                    <Tooltip title="开户时间">
+                      <Icon type="calendar" theme="twoTone" className="client-tab-icon" />{item.openDate}
+                    </Tooltip>
+                  </div>
+                  <div className="account1-tab">
+                    <Tooltip title="最近访问时间">
+                      <Icon type="calendar" theme="twoTone" className="client-tab-icon" />{item.latestDate}
+                    </Tooltip>
+                  </div>
+                </div> 
               </Skeleton>
             </List.Item>
           )}
@@ -240,12 +284,22 @@ class AccountPage extends Component {
         <Modal
           visible={addVisible} title={Logo} footer={null}
           onCancel={this.handleAddCancel} style={{ position: "relative", zIndex: 9999 }} >
-          <AddPage onUpdate={this.onUpdate} />
+          <div style={{ display: this.state.type === '0' ? '' : 'none' }}>
+            <AddPage0 onUpdate={this.onUpdate0} />
+          </div>
+          <div style={{ display: this.state.type === '1' ? '' : 'none' }}>
+            <AddPage1 onUpdate={this.onUpdate1} />
+          </div>
         </Modal>
         <Modal
           visible={editVisible} title={Logo} footer={null}
           onCancel={this.handleEditCancel} style={{ position: "relative", zIndex: 9999 }} >
-          <EditPage oldInfo={this.state.oldInfo} onChange={this.onChange} />
+          <div style={{ display: this.state.type === '0' ? '' : 'none' }}>
+            <EditPage0 oldInfo={this.state.oldInfo} onChange={this.onChange} />
+          </div>
+          <div style={{ display: this.state.type === '1' ? '' : 'none' }}>
+            <EditPage1 oldInfo={this.state.oldInfo} onChange={this.onChange} />
+          </div>
         </Modal>
       </div>
     )

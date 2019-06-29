@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { Icon, Divider, List, Avatar, Popconfirm, Skeleton, Button, Tooltip, Modal } from 'antd';
-import Chart from "react-apexcharts";
 
 import './index.css';
 import logo from "../../assets/logo.svg";
@@ -18,93 +17,6 @@ let colors = [
   '#579EF3',
   '#8577CF',
 ]
-
-var options = {
-  chart: {
-    height: 350,
-    type: 'bar',
-    stacked: true,
-  },
-  plotOptions: {
-    bar: {
-      horizontal: true,
-    },
-  },
-  stroke: {
-    width: 1,
-    colors: ['#fff']
-  },
-  series: [{
-    name: 'Marine Sprite',
-    data: [44, 55, 41, 37, 22, 43, 21]
-  }, {
-    name: 'Striking Calf',
-    data: [53, 32, 33, 52, 13, 43, 32]
-  }, {
-    name: 'Tank Picture',
-    data: [12, 17, 11, 9, 15, 11, 20]
-  }, {
-    name: 'Bucket Slope',
-    data: [9, 7, 5, 8, 6, 9, 4]
-  }, {
-    name: 'Reborn Kid',
-    data: [25, 12, 19, 32, 25, 24, 10]
-  }],
-  title: {
-    text: ''
-  },
-  xaxis: {
-    categories: [2008, 2009, 2010, 2011, 2012, 2013, 2014],
-    labels: {
-      formatter: function (val) {
-        return val + "K"
-      }
-    }
-  },
-  yaxis: {
-    title: {
-      text: undefined
-    },
-
-  },
-  tooltip: {
-    y: {
-      formatter: function (val) {
-        return val + "K"
-      }
-    }
-  },
-  fill: {
-    opacity: 1
-
-  },
-
-  legend: {
-    position: 'top',
-    horizontalAlign: 'left',
-    offsetX: 40
-  }
-}
-
-var pie_options = {
-  chart: {
-    width: 380,
-    type: 'pie',
-  },
-  labels: ['Team A', 'Team B', 'Team C', 'Team D', 'Team E'],
-  series: [44, 55, 13, 43, 22],
-  responsive: [{
-    breakpoint: 480,
-    options: {
-      chart: {
-        width: 200
-      },
-      legend: {
-        position: 'bottom'
-      }
-    }
-  }]
-}
 
 const Logo = (
   <div className="logo-mini">
@@ -247,7 +159,7 @@ class ClientPage extends Component {
 
     return (
       <div className="root-page" id="client-page">
-        <div className="client-top-card">
+        {/* <div className="client-top-card">
           <div className="client-card" style={{ width: "56%" }}>
             <Chart
               options={options}
@@ -271,7 +183,7 @@ class ClientPage extends Component {
               <p>某某支行客户最少，为0人</p>
             </div>
           </div>
-        </div>
+        </div> */}
         <List
           header={
             <div>

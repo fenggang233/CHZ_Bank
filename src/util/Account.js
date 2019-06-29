@@ -1,28 +1,17 @@
-var data0 = [
-  { id: '1234567789', branch: '1234576788', name: '张三', overdraft: '1333', balance: '13343', openDate: '2018-08-09', latestDate: '2019-08-09' },
-  { id: '1234567789', branch: '1234576788', name: '张三', overdraft: '1333', balance: '13343', openDate: '2018-08-09', latestDate: '2019-08-09' },
-  { id: '1234567789', branch: '1234576788', name: '张三', overdraft: '1333', balance: '13343', openDate: '2018-08-09', latestDate: '2019-08-09' }
+var data1 = [
+  { id: '1234567789', branch: '1234576788', aid: 'F996ICU0', overdraft: '1333', balance: '13343', openDate: '2018-08-09', latestDate: '2019-08-09' },
+  { id: '1234567789', branch: '1234576788', aid: 'F996ICU1', overdraft: '1333', balance: '13343', openDate: '2018-08-09', latestDate: '2019-08-09' },
+  { id: '1234567789', branch: '1234576788', aid: 'F996ICU2', overdraft: '1333', balance: '13343', openDate: '2018-08-09', latestDate: '2019-08-09' }
 ];
 
-var data1 = [
-  { id: '1234567789', branch: '1234576788', name: '李四', rate: '1333', type: 'jack', balance: '13343', openDate: '2018-08-09', latestDate: '2019-08-09' },
-  { id: '1234567789', branch: '1234576788', name: '李四', rate: '1333', type: 'jack', balance: '13343', openDate: '2018-08-09', latestDate: '2019-08-09' },
-  { id: '1234567789', branch: '1234576788', name: '李四', rate: '1333', type: 'jack', balance: '13343', openDate: '2018-08-09', latestDate: '2019-08-09' },
+var data0 = [
+  { id: '1234567789', branch: '1234576788', aid: 'K996ICU0', rate: '1333', type: 'RMB', balance: '13343', openDate: '2018-08-09', latestDate: '2019-08-09' },
+  { id: '1234567789', branch: '1234576788', aid: 'K996ICU1', rate: '1333', type: 'RMB', balance: '13343', openDate: '2018-08-09', latestDate: '2019-08-09' },
+  { id: '1234567789', branch: '1234576788', aid: 'K996ICU2', rate: '1333', type: 'RMB', balance: '13343', openDate: '2018-08-09', latestDate: '2019-08-09' },
 ];
 
 class Account {
   constructor(props) {
-    if (props === null) {
-      this.props = props
-    } else {
-      this.props = {
-        count: 3,
-      }
-    }
-    this.props = {
-      ...this.props,
-      sum: 0
-    }
     this.data = data0;
   }
 

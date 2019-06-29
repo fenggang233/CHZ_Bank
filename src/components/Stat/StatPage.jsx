@@ -1,124 +1,82 @@
 import React, { Component } from 'react';
 import Chart from "react-apexcharts";
+import { Divider } from 'antd';
+
+import SearchPage from './SearchPage';
 
 import './index.css';
+
+var pie_options = {
+  chart: {
+    width: 380,
+    type: 'pie',
+  },
+  labels: ['Team A', 'Team B', 'Team C', 'Team D', 'Team E'],
+  series: [44, 55, 13, 43, 22],
+  responsive: [{
+    breakpoint: 480,
+    options: {
+      chart: {
+        width: 200
+      },
+      legend: {
+        position: 'bottom'
+      }
+    }
+  }]
+}
 
 var options = {
   chart: {
     height: 350,
-    type: 'line',
-    stacked: false
+    type: 'bar',
+  },
+  plotOptions: {
+    bar: {
+      horizontal: false,
+      columnWidth: '55%',
+      endingShape: 'rounded'
+    },
   },
   dataLabels: {
     enabled: false
   },
+  stroke: {
+    show: true,
+    width: 2,
+    colors: ['transparent']
+  },
   series: [{
-    name: 'Income',
-    type: 'column',
-    data: [1.4, 2, 2.5, 1.5, 2.5, 2.8, 3.8, 4.6]
-  }, {
-    name: 'Cashflow',
-    type: 'column',
-    data: [1.1, 3, 3.1, 4, 4.1, 4.9, 6.5, 8.5]
+    name: 'Net Profit',
+    data: [44, 55, 57, 56, 61, 58, 63, 60, 66]
   }, {
     name: 'Revenue',
-    type: 'line',
-    data: [20, 29, 37, 36, 44, 45, 50, 58]
+    data: [76, 85, 101, 98, 87, 105, 91, 114, 94]
+  }, {
+    name: 'Free Cash Flow',
+    data: [35, 41, 36, 26, 45, 48, 52, 53, 41]
   }],
-  stroke: {
-    width: [1, 1, 4]
-  },
-  title: {
-    text: 'XYZ - Stock Analysis (2009 - 2016)',
-    align: 'left',
-    offsetX: 110
-  },
   xaxis: {
-    categories: [2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016],
+    categories: ['Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct'],
   },
-  yaxis: [
-    {
-      axisTicks: {
-        show: true,
-      },
-      axisBorder: {
-        show: true,
-        color: '#008FFB'
-      },
-      labels: {
-        style: {
-          color: '#008FFB',
-        }
-      },
-      title: {
-        text: "Income (thousand crores)",
-        style: {
-          color: '#008FFB',
-        }
-      },
-      tooltip: {
-        enabled: true
-      }
-    },
+  yaxis: {
+    title: {
+      text: '$ (thousands)'
+    }
+  },
+  fill: {
+    opacity: 1
 
-    {
-      seriesName: 'Income',
-      opposite: true,
-      axisTicks: {
-        show: true,
-      },
-      axisBorder: {
-        show: true,
-        color: '#00E396'
-      },
-      labels: {
-        style: {
-          color: '#00E396',
-        }
-      },
-      title: {
-        text: "Operating Cashflow (thousand crores)",
-        style: {
-          color: '#00E396',
-        }
-      },
-    },
-    {
-      seriesName: 'Revenue',
-      opposite: true,
-      axisTicks: {
-        show: true,
-      },
-      axisBorder: {
-        show: true,
-        color: '#FEB019'
-      },
-      labels: {
-        style: {
-          color: '#FEB019',
-        },
-      },
-      title: {
-        text: "Revenue (thousand crores)",
-        style: {
-          color: '#FEB019',
-        }
-      }
-    },
-  ],
-  tooltip: {
-    fixed: {
-      enabled: true,
-      position: 'topLeft', // topRight, topLeft, bottomRight, bottomLeft
-      offsetY: 30,
-      offsetX: 60
-    },
   },
-  legend: {
-    horizontalAlign: 'left',
-    offsetX: 40
+  tooltip: {
+    y: {
+      formatter: function (val) {
+        return "$ " + val + " thousands"
+      }
+    }
   }
 }
+
 
 class BarChart extends Component {
   state = {
@@ -141,15 +99,33 @@ class BarChart extends Component {
   render() {
     return (
       <div className="root-page" id="client-page">
-        <div className="client-card">
-          <Chart
-            className="chart"
-            options={options}
-            series={options.series}
-            width="500"
-            type="line"
-            stacked="false"
-          />
+        <div className="client-card" style={{ marginBottom: 20 }}>
+          <SearchPage />
+        </div>
+        <div className="client-top-card">
+          <div className="client-card" style={{ width: "56%" }}>
+            <Chart
+              options={options}
+              series={options.series}
+              type="bar"
+              width="600"
+            />
+          </div>
+          <div className="emplyee-card" style={{ width: "42%" }}>
+            <Chart
+              options={pie_options}
+              series={pie_options.series}
+              type="pie"
+              width="300"
+            />
+            <div style={{ marginLeft: 20, marginTop: 20 }}>
+              <h3>CHZ Bank 客户分布情况</h3>
+              <Divider />
+              <p>共有客户多少</p>
+              <p>某某支行客户最多，为233人</p>
+              <p>某某支行客户最少，为0人</p>
+            </div>
+          </div>
         </div>
       </div>
     )
