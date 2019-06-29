@@ -7,7 +7,7 @@ class API{
         var options = {
             method: 'GET',
             uri: api_host + point,
-            body: {},
+            form: data,
             json: true
         };
         rp(options)
@@ -16,6 +16,58 @@ class API{
             })
             .catch(function (err) {
                 console.log(err);
+                alert(err);
+            });
+    }
+
+    static POST(point, callback, data) {
+        var options = {
+            method: 'POST',
+            uri: api_host + point,
+            form: data,
+            json: true
+        };
+        rp(options)
+            .then(function (parsedBody) {
+                callback(parsedBody);
+            })
+            .catch(function (err) {
+                console.log(err);
+                alert(err);
+            });
+    }
+
+    static PATCH(point, callback, data) {
+        var options = {
+            method: 'PATCH',
+            uri: api_host + point,
+            form: data,
+            json: true
+        };
+        rp(options)
+            .then(function (parsedBody) {
+                callback(parsedBody);
+            })
+            .catch(function (err) {
+                console.log(err);
+                alert(err);
+            });
+    }
+
+    static DELETE(point, callback, data) {
+        var options = {
+            method: 'DELETE',
+            uri: api_host + point,
+            form: data,
+            json: true
+        };
+        rp(options)
+            .then(function (parsedBody) {
+                callback(parsedBody);
+            })
+            .catch(function (err) {
+                console.log(err);
+                alert(err);
             });
     }
 }
