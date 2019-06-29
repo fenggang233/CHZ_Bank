@@ -1,3 +1,5 @@
+import API from './Api';
+
 var data = [
   { name: 'CHZ Branch 肥科支行1', city: '合肥', assets: 12000, type: 'RMB' },
   { name: 'CHZ Branch 皇城支行1', city: '北京', assets: 18000, type: 'RMB' },
@@ -23,7 +25,8 @@ class Branch{
   getBranches = () => {
     // 每次只顺序返回count个，count由程序员初始化时设置
     // 还应该返回各种错误：已经全部返回，数据库错误等
-    return data;
+    API.GET('branch', ((data) => {this.data = data}));
+    return this.data;
   }
 
   addBranch = (branches) => {
