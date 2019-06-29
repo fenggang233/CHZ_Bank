@@ -1,16 +1,9 @@
-import API from './Api';
-
 var data = [
   { lid: 'K7', branch: '合肥东支行', loan: 12000, time: 6 },
   { lid: 'K8', branch: '合肥西支行', loan: 12000, time: 6 },
   { lid: 'K9', branch: '合肥南支行', loan: 12000, time: 6 },
   { lid: 'K6', branch: '合肥北支行', loan: 12000, time: 6 },
 ];
-
-const cityList = [
-  "合肥",
-  "北京",
-  "上海"];
 
 class Branch {
   constructor() {

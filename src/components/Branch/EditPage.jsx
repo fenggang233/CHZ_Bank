@@ -19,8 +19,13 @@ class EditForm extends Component {
         this.setState({ loading: false });
       }, 1000);
       if (!err) {
-        console.log('Received values of form: ', values);
-        this.props.onChange(values);
+        const oldInfo = JSON.parse(this.props.oldInfo);
+        for (var key in values) {
+          if (values[key] !== undefined) {
+            oldInfo[key] = values[key]
+          }
+        }
+        this.props.onChange(oldInfo);
         message.success('修改成功');
       } else {
         message.error('修改失败！');
@@ -31,14 +36,17 @@ class EditForm extends Component {
 
   render() {
     const { getFieldDecorator } = this.props.form;
+    const oldInfo = JSON.parse(this.props.oldInfo);
+    console.log(oldInfo);
     return (
       <Form onSubmit={this.handleSubmit} className="login-form">
         <Form.Item>
           {getFieldDecorator('name', {
           })(
             <Input
+              disabled={ true }
               prefix={<Icon type="bank" style={{ color: 'rgba(0,0,0,.25)' }} />}
-              placeholder="新的支行名"
+              placeholder={ oldInfo.name  }
             />,
           )}
         </Form.Item>
@@ -47,7 +55,7 @@ class EditForm extends Component {
           })(
             <Input
               prefix={<Icon type="global" style={{ color: 'rgba(0,0,0,.25)' }} />}
-              placeholder="新的城市"
+              placeholder={ oldInfo.city }
             />,
           )}
         </Form.Item>
@@ -57,7 +65,7 @@ class EditForm extends Component {
             })(
               <Input
                 prefix={<Icon type="property-safety" style={{ color: 'rgba(0,0,0,.25)' }} />}
-                placeholder="新的资产"
+                placeholder={ oldInfo.assets }
                 style={{ width: '65%', marginRight: '3%' }}
               />
             )}

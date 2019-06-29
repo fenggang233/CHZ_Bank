@@ -16,7 +16,6 @@ class AdvancedSearchForm extends Component {
   handleSearch = e => {
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
-      console.log('Received values of form: ', values);
       this.props.onSearch(values);
     });
   };
@@ -39,7 +38,7 @@ class AdvancedSearchForm extends Component {
             {getFieldDecorator('name', {
             })(<Input style={{ width: '30%' }} placeholder="按名查找" />)}
             {getFieldDecorator('assets', {
-            })(<Input style={{ width: '30%' }} placeholder="按资产查找" />)}
+            })(<Input style={{ width: '30%' }} placeholder="比资产查找" />)}
             {getFieldDecorator('date', {
             })(<Select style={{ width: '40%' }} placeholder="或选择城市">
               {

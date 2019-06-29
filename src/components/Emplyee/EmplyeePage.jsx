@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { Icon, Divider, List, Avatar, Popconfirm, Skeleton, Button, Tooltip, Modal } from 'antd';
-import Chart from "react-apexcharts";
 
 import Emplyee from '../../util/Emplyees';
 import SearchPage from './SearchPage';
@@ -20,15 +19,6 @@ let colors = [
   '#579EF3',
   '#8577CF',
 ]
-
-const o2 = emplyee.getEmplyeeStatByPos();
-const donut_option = {
-  chart: {
-    type: 'donut'
-  },
-  series: o2.series,
-  labels: o2.labels
-}
 
 const Logo = (
   <div className="logo-mini">
@@ -157,35 +147,6 @@ class CollapsePage extends Component {
 
     return (
       <div className="root-page" id="emplyee-page">
-        <div className="emplyee-top-card">
-          <div className="emplyee-card" style={{ width: "66%", display: "flex" }}>
-            <Chart
-              style={{ marginLeft: -10 }}
-              className="chart"
-              options={this.state.options}
-              series={this.state.series}
-              type="bar"
-              width="500"
-              height="200"
-            />
-            <div style={{ marginLeft: 20, marginTop: 15 }}>
-              <h3>CHZ Bank 员工分布</h3>
-              <Divider />
-              <p>共有员工多少</p>
-              <p>某某支行员工最多，为233人</p>
-              <p>某某支行员工最少，为0人</p>
-            </div>
-          </div>
-          <div className="emplyee-card" style={{ width: "32%" }}>
-            <Chart
-              className="chart"
-              options={donut_option}
-              series={donut_option.series}
-              type="donut"
-              width="300"
-            />
-          </div>
-        </div>
         <List
           header={
             <div>

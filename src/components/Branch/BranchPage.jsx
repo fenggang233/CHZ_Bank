@@ -53,6 +53,14 @@ class CollapsePage extends Component {
     stat: {}
   };
 
+  fresh = () => {
+    API.GET('branch', (data) => {
+      this.setState({
+        list: data
+      })
+    })
+  }
+
   componentWillMount() {
     const stat = branch.getAssetsStatByCity(); 
     this.setState({
@@ -78,26 +86,24 @@ class CollapsePage extends Component {
   }
 
   onUpdate = (newBranch) => {
-    branch.addBranch(newBranch);
-    this.setState({
-      list: this.state.list.concat(newBranch),
-    })
+    API.POST('branch', (data) => {
+      this.fresh();
+    }, newBranch);
   }
 
   onChange = (newInfo) => {
-    var { list, changedBranch } = this.state;
-    branch.changeBranch(changedBranch.name, newInfo);
-    list[changedBranch.index] = newInfo;
-    console.log(newInfo);
-    this.setState({
-      list: list
-    })
+    API.PATCH('branch', data => {
+      this.fresh();
+    }, newInfo);
   }
 
   onSearch = (keys) => {
-    this.setState({
-      searchResult: branch.searchBranch(keys)
-    })
+    API.GET('branch', data => {
+      console.log(data);
+      this.setState({
+        searchResult: data
+      })
+    }, keys)
   }
 
   showAddModal = () => {
@@ -106,13 +112,10 @@ class CollapsePage extends Component {
     });
   };
 
-  showEditModal = (name, index) => {
+  showEditModal = (item, index) => {
     this.setState({
       editVisible: true,
-      changedBranch: {
-        name: name,
-        index: index
-      }
+      oldInfo: JSON.stringify(item)
     });
   };
 
@@ -129,12 +132,14 @@ class CollapsePage extends Component {
   };
 
   handleDeleteBranch = (name, index) => {
-    var l = this.state.list;
-    l.splice(index, 1);
-    this.setState({
-      list: l
-    })
-    branch.deleteBranch(name);
+    API.DELETE('branch', (data) => {
+      if (!data.status) {
+        alert('删除失败, 改记录可能作为');
+      }
+      this.fresh();
+    }, { 
+      name: name 
+    });
   }
 
   render() {
@@ -165,7 +170,7 @@ class CollapsePage extends Component {
           renderItem={(item, i) => (
             <List.Item actions={[
               <Popconfirm placement="top" title={"确定编辑？"} 
-                onConfirm={ this.showEditModal.bind(this, item.name, i) }
+                onConfirm={ this.showEditModal.bind(this, item, i) }
                 okText="确定" cancelText="取消">
                 <Icon className="func-icon" type="edit" />
               </Popconfirm>,
@@ -224,7 +229,7 @@ class CollapsePage extends Component {
             renderItem={(item, i) => (
               <List.Item actions={[
                 <Popconfirm placement="top" title={"确定编辑？"}
-                  onConfirm={this.showEditModal.bind(this, item.name, i)}
+                  onConfirm={this.showEditModal.bind(this, item, i)}
                   okText="确定" cancelText="取消">
                   <Icon className="func-icon" type="edit" />
                 </Popconfirm>,
@@ -260,7 +265,7 @@ class CollapsePage extends Component {
         <Modal
           visible={editVisible} title={Logo} footer={null}
           onCancel={this.handleEditCancel} style={{ position: "relative", zIndex: 9999 }} >
-          <EditPage onChange={ this.onChange } />
+          <EditPage onChange={this.onChange} oldInfo={this.state.oldInfo} />
         </Modal>
       </div>
     )
