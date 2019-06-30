@@ -6,7 +6,6 @@ import logo from "../../assets/logo.svg";
 import logoNameB from "../../assets/logo-name-black.svg";
 
 import API from '../../util/Api';
-import Loan from '../../util/Loan';
 import SearchPage from './SearchPage';
 import AddPage from './AddPage';
 import EditPage from './EditPage';
@@ -27,8 +26,6 @@ const Logo = (
       src={logoNameB} />
   </div>
 );
-
-const loan = new Loan();
 
 class LoanPage extends Component {
   state = {
@@ -69,6 +66,7 @@ class LoanPage extends Component {
 
   fresh = () => {
     API.GET('loan', (data) => {
+      console.log(data);
       this.setState({
         list: data
       })
@@ -115,45 +113,11 @@ class LoanPage extends Component {
     });
   }
 
-
-
-  // onUpdate = (newLoan) => {
-  //   loan.addLoan(newLoan);
-  //   console.log(newLoan);
-  //   this.setState({
-  //     list: this.state.list.concat(newLoan),
-  //   })
-  // }
-
-  // onChange = (newInfo) => {
-  //   var { list, oldIndex, oldId } = this.state;
-  //   loan.changeLoan(oldId, newInfo);
-  //   list[oldIndex] = newInfo;
-  //   this.setState({
-  //     list: list
-  //   })
-  // }
-
-  // onSearch = (keys) => {
-  //   this.setState({
-  //     list: loan.searchLoan(keys)
-  //   })
-  // }
-
   handleEditCancel = () => {
     this.setState({
       editVisible: false,
     });
   };
-
-  // handleDelete = (item, index) => {
-  //   var l = this.state.list;
-  //   l.splice(index, 1);
-  //   this.setState({
-  //     list: l
-  //   })
-  //   loan.deleteLoan(item.lid);
-  // }
 
   handleEdit = (item, index) => {
     console.log(item);
@@ -216,7 +180,7 @@ class LoanPage extends Component {
                         twoToneColor={colors[i % 5]} />
                     </Avatar>
                   }
-                  title={ item.lid }
+                  title={ item.id }
                   description={ item.branch }
                 />
                 <div style={{ display: 'flex' }}>
@@ -231,19 +195,21 @@ class LoanPage extends Component {
                     </Tooltip>
                   </div>
                   <div className="client-tab">
+                    <Tooltip title="最近使用事件">
+                      <Icon type="calendar" className="client-tab-icon" />{item.Date}
+                    </Tooltip>
+                  </div>
+                  <div className="client-tab">
                     <Tooltip title={<div>
-                      <div>
-                        <Icon type="user" className="client-tab-icon" />{item.rname}
-                      </div>
-                      <div>
-                        <Icon type="phone" className="client-tab-icon" />{item.rphone}
-                      </div>
-                      <div>
-                        <Icon type="mail" className="client-tab-icon" />{item.remail}
-                      </div>
-                      <div>
-                        <Icon type="usergroup-add" className="client-tab-icon" />{item.rr}
-                      </div>
+                      {
+                        item.history.map((ii, i) => {
+                          return(
+                            <div key={i} >
+                              <Icon type="calendar" className="client-tab-icon" />{i + " => "}{ii.Date}
+                            </div>
+                          )
+                        })
+                      }
                     </div>}>
                       <Icon type="contacts" theme="twoTone" className="client-tab-icon" />更多信息
                     </Tooltip>

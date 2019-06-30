@@ -99,13 +99,6 @@ class ClientPage extends Component {
         message.info("添加成功")
       }
     }, newBranch);
-
-    /**
-  * emplyee.addEmplyee(newEmplyee);
-  this.setState({
-  list: this.state.list.concat(newEmplyee),
-  })
-  * */
   }
 
   onChange = (newInfo) => {
