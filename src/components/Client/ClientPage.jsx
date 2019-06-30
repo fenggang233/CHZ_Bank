@@ -115,13 +115,9 @@ class ClientPage extends Component {
   onSearch = (keys) => {
     API.GET('client/', data => {
       this.setState({
-        searchResult: data
+        list: data
       })
     }, keys)
-
-    // this.setState({
-    //   list: emplyee.searchEmplyee(keys)
-    // })
   }
 
   handleDelete = (item, index) => {

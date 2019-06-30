@@ -15,7 +15,6 @@ class AdvancedSearchForm extends Component {
   handleSearch = e => {
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
-      console.log('Received values of form: ', values);
       this.props.onSearch(values);
     });
   };
@@ -35,7 +34,7 @@ class AdvancedSearchForm extends Component {
       <Form className="ant-advanced-search-form" onSubmit={this.handleSearch}>
         <Row gutter={24}>
           <InputGroup compact={true} onPressEnter={e => { console.log(e) }}>
-            {getFieldDecorator('lid', {
+            {getFieldDecorator('id', {
             })(<Input style={{ width: '25%' }} placeholder="贷款号" />)}
             {getFieldDecorator('branch', {
             })(<Input style={{ width: '25%' }} placeholder="支行" />)}

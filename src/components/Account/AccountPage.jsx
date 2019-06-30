@@ -130,6 +130,7 @@ class AccountPage extends Component {
   }
 
   onSearch = (keys) => {
+    console.log(keys)
     var { type } = this.state;
     if (type === '0') {
       API.GET('account0/', data => {
@@ -169,37 +170,6 @@ class AccountPage extends Component {
       });
     }
   }
-
-  // onUpdate0 = (newClient) => {
-  //   // account.addClient(newClient);
-  //   this.setState({
-  //     list0: this.state.list0.concat(newClient),
-  //   })
-  // }
-
-  // onUpdate1 = (newClient) => {
-  //   // account.addClient(newClient);
-  //   this.setState({
-  //     list1: this.state.list1.concat(newClient),
-  //   })
-  // }
-
-  // onChange = (newInfo) => {
-  //   var { list, oldIndex, oldId, type } = this.state;
-  //   if (type === '0') {
-  //     account.changeClient(oldId, newInfo, '0');
-  //     list[oldIndex] = newInfo;
-  //     this.setState({
-  //       list0: list
-  //     })
-  //   } else {
-  //     account.changeClient(oldId, newInfo, '1');
-  //     list[oldIndex] = newInfo;
-  //     this.setState({
-  //       list1: list
-  //     })
-  //   }
-  // }
 
   handleEditCancel = () => {
     this.setState({

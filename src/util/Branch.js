@@ -4,7 +4,7 @@ var data = [
   { name: 'Branch1', city: '合肥', assets: 12000, type: 'RMB' },
   { name: 'Branch2', city: '北京', assets: 18000, type: 'RMB' },
 
-  
+
   { name: 'CHZ Branch 魔都支行1', city: '上海', assets: 20000, type: 'USD' },
   { name: 'CHZ Branch 肥科支行2', city: '合肥', assets: 12000, type: 'RMB' },
   { name: 'CHZ Branch 皇城支行2', city: '北京', assets: 18000, type: 'RMB' },
@@ -19,6 +19,7 @@ const cityList = [
   "北京",
   "上海"];
 
+  
 class Branch{
   constructor(){
     this.data = data;

@@ -40,7 +40,7 @@ class AdvancedSearchForm extends Component {
               {
                 this.state.cityList.map((city, i) => {
                   return (
-                    <Option key={i} value={city}>{city}</Option>
+                    <Option key={i} value="FirstBranch">{city}</Option>
                   )
                 })
               }

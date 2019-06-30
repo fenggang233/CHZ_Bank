@@ -95,6 +95,7 @@ class LoanPage extends Component {
   }
 
   onSearch = (keys) => {
+    console.log(keys)
     API.GET('loan/', data => {
       this.setState({
         list: data

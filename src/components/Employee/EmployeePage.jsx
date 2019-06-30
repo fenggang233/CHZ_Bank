@@ -45,7 +45,7 @@ class CollapsePage extends Component {
     count: 3,
     list: [],
   };
-  
+
   componentDidMount() {
     this.setState({
       initLoading: false
@@ -101,25 +101,15 @@ class CollapsePage extends Component {
         this.fresh();
       }
     }, newInfo);
-
-        // var { list, oldIndex, oldId } = this.state;
-    // employee.changeEmployee(oldId, newInfo);
-    // list[oldIndex] = newInfo;
-    // this.setState({
-    //   list: list
-    // })
   }
 
   onSearch = (keys) => {
+    console.log(keys)
     API.GET('employee/', data => {
       this.setState({
-        searchResult: data
+        list: data
       })
     }, keys)
-
-    // this.setState({
-    //   list: employee.searchEmployee(keys)
-    // })
   }
 
   handleDelete = (item, index) => {
@@ -132,13 +122,6 @@ class CollapsePage extends Component {
     }, {
       id: item.id
     });
-
-    // var l = this.state.list;
-    // l.splice(index, 1);
-    // this.setState({
-    //   list: l
-    // })
-    // employee.deleteEmployee(item.id);
   }
 
   onLoadMore = () => {

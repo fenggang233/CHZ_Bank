@@ -101,14 +101,27 @@ class BarChart extends Component {
   }
 
   onUpdate = (branch) => {
-    API.GET('stat/balance', data => {
+    API.GET('stat/balance/', data => {
       console.log(data)
+      var x = optionsByClientTemp;
+      x.series = data.series;
+      x.labels = data.labels;
+      this.setState({
+        optionsByClient: x
+      })
     }, {
-      name: branch
+      name: 'FirstBranch'
     })
-    this.setState({
-      optionsByClient: stat.getStatByClient(''),
-      optionsByAccount: stat.getStatByAccount('')
+
+    API.GET('stat/month/', data => {
+      var x = optionsByAccountTemp;
+      x.series = data.series;
+      x.labels = data.labels;
+      this.setState({
+        optionsByAccount: x
+      })
+    }, {
+      name: 'FirstBranch'
     })
   }
 
