@@ -14,8 +14,8 @@ var optionsByClientTemp = {
     width: 380,
     type: 'pie',
   },
-  labels: ['Team A', 'Team B'],
-  series: [44, 55],
+  labels: ["A0 number", "A1 number", "Loan number"],
+  series: [44, 55, 66],
   responsive: [{
     breakpoint: 480,
     options: {
@@ -113,6 +113,7 @@ class BarChart extends Component {
       this.setState({
         optionsByClient0: x
       })
+      console.log(data);
     }, {
       name: branch
     })
@@ -124,57 +125,56 @@ class BarChart extends Component {
       this.setState({
         optionsByAccount0: x
       })
+      console.log(data);
     }, {
       name: branch
     })
+  }
 
+  onU = (branch) => {
     API.GET('stat/number/', data => {
       var x = optionsByClientTemp;
       x.series = data.series;
       x.labels = data.labels;
       this.setState({
-        optionsByClient1: x
+        optionsByClient0: x
       })
-      console.log(data);
     }, {
         name: branch
-      })
+    })
 
     API.GET('stat/number/month/', data => {
       var x = optionsByAccountTemp;
       x.series = data.series;
       x.labels = data.labels;
       this.setState({
-        optionsByAccount1: x
+        optionsByAccount0: x
       })
-      console.log(data);
     }, {
         name: branch
-      })
+    })
   }
 
   render() {
-    const { optionsByAccount0, optionsByClient0, optionsByClient1,
-      optionsByAccount1 } = this.state;
     return (
       <div className="root-page" id="client-page">
         <div className="client-card" style={{ marginBottom: 20 }}>
-          <SearchPage onUpdate={this.onUpdate} />
+          <SearchPage onUpdate={this.onUpdate} onU={this.onU}/>
         </div>
         <div className="client-top-card">
           <div className="client-card" style={{ width: "56%" }}>
             <h3> 最近十个月用户数统计 </h3>
             <Chart
-              options={ optionsByAccount0 }
-              series={optionsByAccount0.series}
+              options={this.state.optionsByAccount0 }
+              series={this.state.optionsByAccount0.series}
               type="bar"
               width="600"
             />
           </div>
           <div className="emplyee-card" style={{ width: "42%" }}>
             <Chart
-              options={optionsByClient0}
-              series={optionsByClient0.series}
+              options={this.state.optionsByClient0}
+              series={this.state.optionsByClient0.series}
               type="pie"
               width="300"
             />
@@ -182,32 +182,6 @@ class BarChart extends Component {
               <h3>CHZ Bank 客户分布情况</h3>
               <Divider />
               <p>共有客户多少</p>
-              <p>某某支行客户最多，为233人</p>
-              <p>某某支行客户最少，为0人</p>
-            </div>
-          </div>
-        </div>
-        <div className="client-top-card">
-          <div className="client-card" style={{ width: "56%" }}>
-            <h3> 最近一年金额统计 </h3>
-            <Chart
-              options={optionsByAccount1}
-              series={optionsByAccount1.series}
-              type="bar"
-              width="600"
-            />
-          </div>
-          <div className="emplyee-card" style={{ width: "42%" }}>
-            <Chart
-              options={optionsByClient1}
-              series={optionsByClient1.series}
-              type="pie"
-              width="300"
-            />
-            <div style={{ marginLeft: 20, marginTop: 20 }}>
-              <h3>CHZ Bank 金额分布情况</h3>
-              <Divider />
-              <p>共有金额多少</p>
               <p>某某支行客户最多，为233人</p>
               <p>某某支行客户最少，为0人</p>
             </div>

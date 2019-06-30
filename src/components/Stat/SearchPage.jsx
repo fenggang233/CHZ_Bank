@@ -19,6 +19,13 @@ class AdvancedSearchForm extends Component {
     });
   };
 
+  handleU = e => {
+    e.preventDefault();
+    this.props.form.validateFields((err, values) => {
+      this.props.onU(values.branch);
+    });
+  }
+
   handleReset = () => {
     this.props.form.resetFields();
   };
@@ -42,6 +49,9 @@ class AdvancedSearchForm extends Component {
           <Col span={24} style={{ textAlign: 'right', marginTop: 10 }}>
             <Button type="primary" htmlType="submit" icon="search" style={{ margin: 5 }}>
               查询
+            </Button>
+            <Button style={{ marginLeft: 5 }} onClick={this.handleU} icon="delete" >
+              下一个
             </Button>
             <Button style={{ marginLeft: 5 }} onClick={this.handleReset} icon="delete" >
               清空
