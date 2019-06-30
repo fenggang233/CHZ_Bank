@@ -4,7 +4,7 @@ var data = [
   { id: '1234567789', branch: '合肥支行', phone: '1234576788', name: '王五', addr: '木星', date: '2016-06-06', manager: '牛腿', mid: '124545656' },
 ];
 
-class Emplyee {
+class Employee {
   constructor(props) {
     if (props === null) {
       this.props = props
@@ -20,7 +20,7 @@ class Emplyee {
     this.data = data;
   }
 
-  getEmplyee = () => {
+  getEmployee = () => {
     // 每次只顺序返回count个，count由程序员初始化时设置
     // 还应该返回各种错误：已经全部返回，数据库错误等
     var data = this.data.slice(this.props.sum, this.props.sum + this.props.count);
@@ -28,7 +28,7 @@ class Emplyee {
     return data;
   }
 
-  addEmplyee = (emplyee) => {
+  addEmployee = (emplyee) => {
     // 输入：要添加的支行  list[obj]
     // 功能：添加元组到数据库，
     // 返回错误：数据库方面的错误
@@ -36,18 +36,18 @@ class Emplyee {
     this.props.sum += 1;
   }
 
-  changeEmplyee = (oldKey, newEmplyee) => {
+  changeEmployee = (oldKey, newEmployee) => {
     // 输入：修改多的新信息 obj
     // 操作：更新，首先检查key是不是新的
     for (var i = 0; i < this.data.length; i++) {
       if (this.data[i].id === oldKey) {
-        this.data[i] = newEmplyee;
+        this.data[i] = newEmployee;
         break;
       }
     }
   }
 
-  searchEmplyee = (keys) => {
+  searchEmployee = (keys) => {
     // 对数据进行查询，
     return [
       { id: '1234567789', branch: '合肥支行', phone: '1234576788', name: '张三?', addr: '火星', date: '2018-08-08', manager: '牛四', mid: '124545656' },
@@ -56,7 +56,7 @@ class Emplyee {
     ];
   }
 
-  deleteEmplyee = (id) => {
+  deleteEmployee = (id) => {
     // 删除主键为name的元组
     for (var i = 0; i < this.data.length; i++) {
       if (this.data[i].id === id) {
@@ -76,7 +76,7 @@ class Emplyee {
     return [30, 40, 45, 50, 49, 60, 70, 91, 40, 45, 50, 49];
   }
 
-  getEmplyeeStatByCity = () => {
+  getEmployeeStatByCity = () => {
     // 统计不同城市的资产
     return {
       'option': {
@@ -96,7 +96,7 @@ class Emplyee {
     }
   }
 
-  getEmplyeeStatByPos = () => {
+  getEmployeeStatByPos = () => {
     return {
       series: [44, 55],
       labels: ['员工', '经理']
@@ -104,4 +104,4 @@ class Emplyee {
   }
 }
 
-export default Emplyee;
+export default Employee;

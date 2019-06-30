@@ -8,7 +8,7 @@ import UserPage from '../components/User/UserPage';
 import InfoPage from '../components/Info/InfoPage';
 
 import BranchPage from '../containers/BranchPage';
-import EmplyeePage from '../components/Emplyee/EmplyeePage';
+import EmployeePage from '../components/Employee/EmployeePage';
 import ClientPage from '../components/Client/ClientPage';
 import AccountPage from '../components/Account/AccountPage';
 import LoanPage from '../components/Loan/LoanPage';
@@ -177,7 +177,7 @@ class LayoutPage extends Component {
               <BranchPage />
             </div>
             <div style={{ display: this.state.which === '2' ? '' : 'none' }}>
-              <EmplyeePage />
+              <EmployeePage />
             </div>
             <div style={{ display: this.state.which === '3' ? '' : 'none' }}>
               <ClientPage />

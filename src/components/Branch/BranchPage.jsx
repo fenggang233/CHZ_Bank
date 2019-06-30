@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Button, List, Avatar, Skeleton, Icon, Divider, Modal, Popconfirm } from 'antd';
+import { Button, List, Avatar, Skeleton, Icon, Divider, Modal, Popconfirm, message } from 'antd';
 import Chart from "react-apexcharts";
 
 import SearchPage from './SearchPage';
@@ -64,7 +64,7 @@ class CollapsePage extends Component {
       stat: stat
     });
 
-    API.GET('branch', (data) => {
+    API.GET('branch/', (data) => {
       this.setState({
         list: data
       })
@@ -79,7 +79,7 @@ class CollapsePage extends Component {
 
 
   fresh = () => {
-    API.GET('branch', (data) => {
+    API.GET('branch/', (data) => {
       this.setState({
         list: data
       })
@@ -87,9 +87,9 @@ class CollapsePage extends Component {
   }
 
   onUpdate = (newBranch) => {
-    API.POST('branch', (data) => {
+    API.POST('branch/', (data) => {
       if (!data.status) {
-        alert('添加失败！');
+        message.info(data.msg)
       } else {
         this.fresh();
       }
@@ -97,7 +97,7 @@ class CollapsePage extends Component {
   }
 
   onChange = (newInfo) => {
-    API.PATCH('branch', data => {
+    API.PATCH('branch/', data => {
       if (!data.status) {
         alert('修改失败！');
       } else {
@@ -107,7 +107,7 @@ class CollapsePage extends Component {
   }
 
   onSearch = (keys) => {
-    API.GET('branch', data => {
+    API.GET('branch/', data => {
       this.setState({
         searchResult: data
       })
@@ -115,9 +115,9 @@ class CollapsePage extends Component {
   }
 
   handleDeleteBranch = (name, index) => {
-    API.DELETE('branch', (data) => {
+    API.DELETE('branch/', (data) => {
       if (!data.status) {
-        alert('删除失败！');
+        message.info(data.msg);
       } else {
         this.fresh();
       }

@@ -72,7 +72,7 @@ class AccountPage extends Component {
   };
 
   fresh0 = () => {
-    API.GET('account0', (data) => {
+    API.GET('account0/', (data) => {
       this.setState({
         list0: data
       })
@@ -80,7 +80,7 @@ class AccountPage extends Component {
   }
 
   fresh1 = () => {
-    API.GET('account1', (data) => {
+    API.GET('account1/', (data) => {
       this.setState({
         list1: data
       })
@@ -88,7 +88,7 @@ class AccountPage extends Component {
   }
 
   onUpdate0 = (newBranch) => {
-    API.POST('account0', (data) => {
+    API.POST('account0/', (data) => {
       if (!data.status) {
         alert('添加失败！');
       } else {
@@ -98,7 +98,7 @@ class AccountPage extends Component {
   }
 
   onUpdate1 = (newBranch) => {
-    API.POST('account1', (data) => {
+    API.POST('account1/', (data) => {
       if (!data.status) {
         alert('添加失败！');
       } else {
@@ -110,7 +110,7 @@ class AccountPage extends Component {
   onChange = (newInfo) => {
     var { type } = this.state;
     if (type === '0') {
-      API.PATCH('account0', data => {
+      API.PATCH('account0/', data => {
         if (!data.status) {
           alert('修改失败！');
         } else {
@@ -118,7 +118,7 @@ class AccountPage extends Component {
         }
       }, newInfo);
     } else {
-      API.PATCH('account1', data => {
+      API.PATCH('account1/', data => {
         if (!data.status) {
           alert('修改失败！');
         } else {
@@ -131,13 +131,13 @@ class AccountPage extends Component {
   onSearch = (keys) => {
     var { type } = this.state;
     if (type === '0') {
-      API.GET('account0', data => {
+      API.GET('account0/', data => {
         this.setState({
           list0: data
         })
       }, keys);
     } else {
-      API.GET('account1', data => {
+      API.GET('account1/', data => {
         this.setState({
           list1: data
         })
@@ -147,7 +147,7 @@ class AccountPage extends Component {
 
   handleDelete = (item, index) => {
     if (this.state.type === '0') {
-      API.DELETE('account0', (data) => {
+      API.DELETE('account0/', (data) => {
         if (!data.status) {
           alert('删除失败！');
         } else {
@@ -157,7 +157,7 @@ class AccountPage extends Component {
           aid: item.aid
       });
     } else {
-      API.DELETE('account1', (data) => {
+      API.DELETE('account1/', (data) => {
         if (!data.status) {
           alert('删除失败！');
         } else {
@@ -220,13 +220,13 @@ class AccountPage extends Component {
     if (e.target.value === '0') {
       this.setState({
         type: '0',
-        list0: account.getAccount('0')
       });
+      this.fresh0();
     } else {
       this.setState({
         type: '1',
-        list1: account.getAccount('1')
       });
+      this.fresh1();
     }
   };
 

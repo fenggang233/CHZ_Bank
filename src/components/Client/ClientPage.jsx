@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Icon, Divider, List, Avatar, Popconfirm, Skeleton, Button, Tooltip, Modal } from 'antd';
+import { Icon, Divider, List, Avatar, Popconfirm, Skeleton, Button, Tooltip, Modal, message } from 'antd';
 
 import './index.css';
 import logo from "../../assets/logo.svg";
@@ -83,7 +83,7 @@ class ClientPage extends Component {
   }
 
   fresh = () => {
-    API.GET('client', (data) => {
+    API.GET('client/', (data) => {
       this.setState({
         list: data
       })
@@ -91,11 +91,12 @@ class ClientPage extends Component {
   }
 
   onUpdate = (newBranch) => {
-    API.POST('client', (data) => {
+    API.POST('client/', (data) => {
       if (!data.status) {
-        alert('添加失败！');
+        message.info(data.msg)
       } else {
         this.fresh();
+        message.info("添加成功")
       }
     }, newBranch);
 
@@ -108,24 +109,18 @@ class ClientPage extends Component {
   }
 
   onChange = (newInfo) => {
-    API.PATCH('client', data => {
+    API.PATCH('client/', data => {
       if (!data.status) {
-        alert('修改失败！');
+        message.info(data.msg);
       } else {
         this.fresh();
+        message.info("修改成功")
       }
     }, newInfo);
-
-    // var { list, oldIndex, oldId } = this.state;
-    // emplyee.changeEmplyee(oldId, newInfo);
-    // list[oldIndex] = newInfo;
-    // this.setState({
-    //   list: list
-    // })
   }
 
   onSearch = (keys) => {
-    API.GET('client', data => {
+    API.GET('client/', data => {
       this.setState({
         searchResult: data
       })
@@ -137,7 +132,7 @@ class ClientPage extends Component {
   }
 
   handleDelete = (item, index) => {
-    API.DELETE('client', (data) => {
+    API.DELETE('client/', (data) => {
       if (!data.status) {
         alert('删除失败！');
       } else {

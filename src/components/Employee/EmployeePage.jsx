@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import { Icon, Divider, List, Avatar, Popconfirm, Skeleton, Button, Tooltip, Modal } from 'antd';
+import { Icon, Divider, List, Avatar, Popconfirm, Skeleton, Button, Tooltip, Modal, message } from 'antd';
 
 import API from '../../util/Api';
-import Emplyee from '../../util/Emplyees';
+import Employee from '../../util/Employees';
 import SearchPage from './SearchPage';
 import AddPage from './AddPage';
 import EditPage from './EditPage';
@@ -11,7 +11,7 @@ import './index.css';
 import logo from "../../assets/logo.svg";
 import logoNameB from "../../assets/logo-name-black.svg";
 
-const emplyee = new Emplyee();
+const employee = new Employee();
 
 let colors = [
   '#ED6D79',
@@ -30,7 +30,9 @@ const Logo = (
   </div>
 );
 
-const option1 = emplyee.getEmplyeeStatByCity();
+const option1 = employee.getEmployeeStatByCity();
+
+// eslint-disable-next-line no-extend-native
 
 class CollapsePage extends Component {
   state = {
@@ -43,7 +45,7 @@ class CollapsePage extends Component {
     count: 3,
     list: [],
   };
-
+  
   componentDidMount() {
     this.setState({
       initLoading: false
@@ -73,41 +75,35 @@ class CollapsePage extends Component {
   }
 
   fresh = () => {
-    API.GET('emplyee', (data) => {
+    API.GET('employee/', (data) => {
       this.setState({
         list: data
       })
     })
   }
 
-  onUpdate = (newBranch) => {
-    API.POST('emplyee', (data) => {
+  onUpdate = (newEmployee) => {
+    API.POST('employee/', (data) => {
       if (!data.status) {
-        alert('添加失败！');
+        message.info(data.msg);
       } else {
+        message.info('录入成功');
         this.fresh();
       }
-    }, newBranch);
-
-      /**
-    * emplyee.addEmplyee(newEmplyee);
-    this.setState({
-    list: this.state.list.concat(newEmplyee),
-    })
-    * */
+    }, newEmployee);
   }
 
   onChange = (newInfo) => {
-    API.PATCH('emplyee', data => {
+    API.PATCH('employee/', data => {
       if (!data.status) {
-        alert('修改失败！');
+        message.info(data.msg);
       } else {
         this.fresh();
       }
     }, newInfo);
 
         // var { list, oldIndex, oldId } = this.state;
-    // emplyee.changeEmplyee(oldId, newInfo);
+    // employee.changeEmployee(oldId, newInfo);
     // list[oldIndex] = newInfo;
     // this.setState({
     //   list: list
@@ -115,21 +111,21 @@ class CollapsePage extends Component {
   }
 
   onSearch = (keys) => {
-    API.GET('emplyee', data => {
+    API.GET('employee/', data => {
       this.setState({
         searchResult: data
       })
     }, keys)
 
     // this.setState({
-    //   list: emplyee.searchEmplyee(keys)
+    //   list: employee.searchEmployee(keys)
     // })
   }
 
   handleDelete = (item, index) => {
-    API.DELETE('emplyee', (data) => {
+    API.DELETE('employee/', (data) => {
       if (!data.status) {
-        alert('删除失败！');
+        message.info(data.msg);
       } else {
         this.fresh();
       }
@@ -142,7 +138,7 @@ class CollapsePage extends Component {
     // this.setState({
     //   list: l
     // })
-    // emplyee.deleteEmplyee(item.id);
+    // employee.deleteEmployee(item.id);
   }
 
   onLoadMore = () => {
@@ -158,7 +154,7 @@ class CollapsePage extends Component {
         loading: false,
         list: this.state.list.slice(0,
           this.state.list.length - this.state.count)
-          .concat(emplyee.getEmplyee()),
+          .concat(employee.getEmployee()),
       });
     }, 500);
   };
@@ -249,7 +245,7 @@ class CollapsePage extends Component {
                     </Tooltip>
                   </div>
                   <div className="emplyee-tab">
-                    <Tooltip title="入职日期，已入职8年">
+                    <Tooltip title="入职日期">
                       <Icon type="calendar" theme="twoTone" className="emplyee-tab-icon" />{item.date}
                     </Tooltip>
                   </div>

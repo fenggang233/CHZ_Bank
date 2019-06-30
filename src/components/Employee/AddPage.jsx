@@ -44,9 +44,7 @@ class AddForm extends Component {
       }, 1000);
       if (!err) {
         values['date'] = values['date'].format("YYYY-MM-DD");
-        console.log('Received values of form: ', values);
         this.props.onUpdate(values);
-        message.success('录入成功');
       } else {
         message.error('录入失败！');
       }
@@ -112,7 +110,6 @@ class AddForm extends Component {
         </Row>
         <Row gutter={24} style={{ marginTop: 20 }}>
           {getFieldDecorator('addr', {
-            rules: [{ required: true, message: '请输入地址！' }],
           })(
             <Input 
               prefix={<Icon type="home" style={{ color: 'rgba(0,0,0,.25)' }} />}
@@ -122,12 +119,11 @@ class AddForm extends Component {
         </Row>
         <Row gutter={24} style={{ marginTop: 20 }}>
           <InputGroup compact={true} onPressEnter={e => { console.log(e) }}>
-            {getFieldDecorator('manager', {
-              rules: [{ required: true, message: '请输入名字！' }],
+            {getFieldDecorator('branch', {
             })(
               <Input style={{ width: "40%" }}
                 prefix={<Icon type="smile" style={{ color: 'rgba(0,0,0,.25)' }} />}
-                placeholder="经理姓名"
+                placeholder="支行名"
               />,
             )}
             {getFieldDecorator('mid', {
