@@ -160,11 +160,7 @@ class LoanPage extends Component {
           dataSource={list}
           renderItem={(item, i) => (
             <List.Item actions={[
-              <Popconfirm placement="top" title={"确定编辑？"}
-                onConfirm={this.handleEdit.bind(this, item, i)}
-                okText="确定" cancelText="取消">
-                <Icon className="func-icon" type="edit" />
-              </Popconfirm>,
+              <Icon className="func-icon" display={true} type="edit" />,
               <Popconfirm placement="top" title={"确定删除？"}
                 onConfirm={this.handleDelete.bind(this, item, i)}
                 okText="确定" cancelText="取消">

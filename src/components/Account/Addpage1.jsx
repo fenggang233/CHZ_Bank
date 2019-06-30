@@ -62,7 +62,7 @@ class AddForm extends Component {
       <Form onSubmit={this.handleSubmit} className="login-form">
         <Row gutter={24} style={{ marginTop: 20 }}>
           <InputGroup compact={true} onPressEnter={e => { console.log(e) }}>
-            {getFieldDecorator('name', {
+            {getFieldDecorator('aid', {
             })(
               <Input style={{ width: "40%" }}
                 prefix={<Icon type="account-book" style={{ color: 'rgba(0,0,0,.25)' }} />}

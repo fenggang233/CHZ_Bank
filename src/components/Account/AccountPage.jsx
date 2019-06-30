@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Radio, Icon, Divider, List, Avatar, Popconfirm, Skeleton, Button, Tooltip, Modal } from 'antd';
+import { Radio, Icon, Divider, List, Avatar, Popconfirm, Skeleton, Button, Tooltip, Modal, message } from 'antd';
 
 import './index.css';
 import logo from "../../assets/logo.svg";
@@ -87,9 +87,10 @@ class AccountPage extends Component {
   onUpdate0 = (newBranch) => {
     API.POST('account0/', (data) => {
       if (!data.status) {
-        alert('添加失败！');
+        message.info(data.msg);
       } else {
         this.fresh0();
+        message.info("修改成功");
       }
     }, newBranch);
   }
@@ -97,9 +98,10 @@ class AccountPage extends Component {
   onUpdate1 = (newBranch) => {
     API.POST('account1/', (data) => {
       if (!data.status) {
-        alert('添加失败！');
+        message.info(data.msg);
       } else {
         this.fresh1();
+        message.info("修改成功");
       }
     }, newBranch);
   }
@@ -109,17 +111,19 @@ class AccountPage extends Component {
     if (type === '0') {
       API.PATCH('account0/', data => {
         if (!data.status) {
-          alert('修改失败！');
+          message.info(data.msg);
         } else {
           this.fresh0();
+          message.info("修改成功");
         }
       }, newInfo);
     } else {
       API.PATCH('account1/', data => {
         if (!data.status) {
-          alert('修改失败！');
+          message.info(data.msg);
         } else {
           this.fresh1();
+          message.info("修改成功");
         }
       }, newInfo);
     }
