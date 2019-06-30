@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Icon, Divider, List, Avatar, Popconfirm, Skeleton, Button, Tooltip, Modal } from 'antd';
+import { Icon, Divider, List, Avatar, Popconfirm, Skeleton, Button, Tooltip, Modal, message } from 'antd';
 
 import './index.css';
 import logo from "../../assets/logo.svg";
@@ -65,7 +65,7 @@ class LoanPage extends Component {
   }
 
   fresh = () => {
-    API.GET('loan', (data) => {
+    API.GET('loan/', (data) => {
       console.log(data);
       this.setState({
         list: data
@@ -74,19 +74,20 @@ class LoanPage extends Component {
   }
 
   onUpdate = (newLoan) => {
-    API.POST('loan', (data) => {
+    API.POST('loan/', (data) => {
       if (!data.status) {
-        alert('添加失败！');
+        message.info(data.msg);
       } else {
         this.fresh();
+        message.info("添加成功！")
       }
     }, newLoan);
   }
 
   onChange = (newInfo) => {
-    API.PATCH('loan', data => {
+    API.PATCH('loan/', data => {
       if (!data.status) {
-        alert('修改失败！');
+        message.info(data.msg);
       } else {
         this.fresh();
       }
@@ -94,7 +95,7 @@ class LoanPage extends Component {
   }
 
   onSearch = (keys) => {
-    API.GET('loan', data => {
+    API.GET('loan/', data => {
       this.setState({
         list: data
       })
@@ -102,7 +103,7 @@ class LoanPage extends Component {
   }
 
   handleDelete = (item, index) => {
-    API.DELETE('loan', (data) => {
+    API.DELETE('loan/', (data) => {
       if (!data.status) {
         alert('删除失败！');
       } else {
@@ -160,7 +161,7 @@ class LoanPage extends Component {
           dataSource={list}
           renderItem={(item, i) => (
             <List.Item actions={[
-              <Icon className="func-icon" display={true} type="edit" />,
+              <Icon className="func-icon" type="edit" />,
               <Popconfirm placement="top" title={"确定删除？"}
                 onConfirm={this.handleDelete.bind(this, item, i)}
                 okText="确定" cancelText="取消">
@@ -182,7 +183,7 @@ class LoanPage extends Component {
                 <div style={{ display: 'flex' }}>
                   <div className="client-tab">
                     <Tooltip title="贷款金额">
-                      <Icon type="pay-circle" theme="twoTone" className="client-tab-icon" />{item.loan}
+                      <Icon type="pay-circle" className="client-tab-icon" />{item.loan}
                     </Tooltip>
                   </div>
                   <div className="client-tab">

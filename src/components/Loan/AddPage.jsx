@@ -19,9 +19,7 @@ class AddForm extends Component {
         this.setState({ loading: false });
       }, 1000);
       if (!err) {
-        console.log('Received values of form: ', values);
         this.props.onUpdate(values);
-        message.success('录入成功');
       } else {
         message.error('录入失败！');
       }
@@ -35,7 +33,7 @@ class AddForm extends Component {
       <Form onSubmit={this.handleSubmit} className="login-form">
         <Row gutter={24} style={{ marginTop: 20 }}>
           <InputGroup compact={true} onPressEnter={e => { console.log(e) }}>
-            {getFieldDecorator('lid', {
+            {getFieldDecorator('id', {
             })(
               <Input
                 prefix={<Icon type="money-collect" style={{ color: 'rgba(0,0,0,.25)' }} />}

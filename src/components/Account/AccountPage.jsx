@@ -252,7 +252,7 @@ class AccountPage extends Component {
         <List
           header={
             <div>
-              <h3>CHZ Bank 客户列表</h3>
+              <h3>CHZ Bank 贷款列表</h3>
               <Radio.Group value={type} style={{ marginTop: 10 }} onChange={this.handleTypeChange}>
                 <Radio.Button value="0">储蓄账户</Radio.Button>
                 <Radio.Button value="1">支票账户</Radio.Button>
@@ -296,8 +296,22 @@ class AccountPage extends Component {
                   title={item.aid}
                   description={item.id}
                 />
-                
                 <div style={{ display: this.state.type === '0' ? 'flex' : 'none' }}>
+                  <div className="account0-tab">
+                    <Tooltip title={<div>
+                      {
+                        item.owners.map((ii, i) => {
+                          return (
+                            <div key={i} >
+                              <Icon type="user" className="client-tab-icon" />{ii}
+                            </div>
+                          )
+                        })
+                      }
+                    </div>}>
+                      <Icon type="usergroup-add" className="client-tab-icon" />共有者
+                    </Tooltip>
+                  </div>
                   <div className="account0-tab">
                     <Tooltip title="开户支行">
                       <Icon type="bank" theme="twoTone" className="client-tab-icon" />{item.branch}
@@ -308,12 +322,12 @@ class AccountPage extends Component {
                       <Icon type="pay-circle" className="client-tab-icon" />{item.balance}
                     </Tooltip>
                   </div>
-                  <div className="account0-tab">
+                  <div className="account0-tab" style={{ width: 100 }}>
                     <Tooltip title="币种">
                       <Icon type="money-collect" className="client-tab-icon" />{item.type}
                     </Tooltip>
                   </div>
-                  <div className="account0-tab">
+                  <div className="account0-tab" style={{ width: 100 }}>
                     <Tooltip title="利率">
                       <Icon type="stock" className="client-tab-icon" />{item.rate}
                     </Tooltip>
@@ -330,6 +344,21 @@ class AccountPage extends Component {
                   </div>
                 </div> 
                 <div style={{ display: this.state.type === '1' ? 'flex' : 'none' }}>
+                  <div className="account0-tab">
+                    <Tooltip title={<div>
+                      {
+                        item.owners.map((ii, i) => {
+                          return (
+                            <div key={i} >
+                              <Icon type="user" className="client-tab-icon" />{ii}
+                            </div>
+                          )
+                        })
+                      }
+                    </div>}>
+                      <Icon type="usergroup-add" className="client-tab-icon" />共有者
+                    </Tooltip>
+                  </div>
                   <div className="account1-tab">
                     <Tooltip title="开户支行">
                       <Icon type="bank" theme="twoTone" className="client-tab-icon" />{item.branch}

@@ -25,9 +25,7 @@ class EditForm extends Component {
             oldInfo[key] = values[key]
           }
         }
-        console.log('Received values of form: ', oldInfo);
         this.props.onChange(oldInfo);
-        message.success('修改成功');
       } else {
         message.error('修改失败！');
       }

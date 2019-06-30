@@ -45,7 +45,7 @@ class EditForm extends Component {
           <InputGroup compact={true} onPressEnter={e => { console.log(e) }}>
             {getFieldDecorator('aid', {
             })(
-              <Input style={{ width: "40%" }}
+              <Input style={{ width: "40%" }} disabled={true}
                 prefix={<Icon type="account-book" style={{ color: 'rgba(0,0,0,.25)' }} />}
                 placeholder={oldInfo.aid}
               />,

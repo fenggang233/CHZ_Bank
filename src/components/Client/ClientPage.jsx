@@ -136,29 +136,6 @@ class ClientPage extends Component {
       });
   }
 
-
-  // onUpdate = (newClient) => {
-  //   client.addClient(newClient);
-  //   this.setState({
-  //     list: this.state.list.concat(newClient),
-  //   })
-  // }
-
-  // onChange = (newInfo) => {
-  //   var { list, oldIndex, oldId } = this.state;
-  //   client.changeClient(oldId, newInfo);
-  //   list[oldIndex] = newInfo;
-  //   this.setState({
-  //     list: list
-  //   })
-  // }
-
-  // onSearch = (keys) => {
-  //   this.setState({
-  //     list: client.searchClient(keys)
-  //   })
-  // }
-
   onLoadMore = () => {
     this.setState({
       loading: true,
@@ -182,15 +159,6 @@ class ClientPage extends Component {
       editVisible: false,
     });
   };
-
-  // handleDelete = (item, index) => {
-  //   var l = this.state.list;
-  //   l.splice(index, 1);
-  //   this.setState({
-  //     list: l
-  //   })
-  //   client.deleteClient(item.id);
-  // }
 
   handleEdit = (item, index) => {
     console.log(item);
@@ -218,31 +186,6 @@ class ClientPage extends Component {
 
     return (
       <div className="root-page" id="client-page">
-        {/* <div className="client-top-card">
-          <div className="client-card" style={{ width: "56%" }}>
-            <Chart
-              options={options}
-              series={options.series}
-              type="bar"
-              width="600"
-            />
-          </div>
-          <div className="emplyee-card" style={{ width: "42%" }}>
-            <Chart
-              options={pie_options}
-              series={pie_options.series}
-              type="pie"
-              width="300"
-            />
-            <div style={{ marginLeft: 20, marginTop: 20 }}>
-              <h3>CHZ Bank 客户分布情况</h3>
-              <Divider />
-              <p>共有客户多少</p>
-              <p>某某支行客户最多，为233人</p>
-              <p>某某支行客户最少，为0人</p>
-            </div>
-          </div>
-        </div> */}
         <List
           header={
             <div>

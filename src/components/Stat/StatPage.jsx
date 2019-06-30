@@ -4,6 +4,7 @@ import { Divider } from 'antd';
 
 import SearchPage from './SearchPage';
 import Stat from '../../util/Stat';
+import API from '../../util/Api';
 
 import './index.css';
 
@@ -100,6 +101,11 @@ class BarChart extends Component {
   }
 
   onUpdate = (branch) => {
+    API.GET('stat/balance', data => {
+      console.log(data)
+    }, {
+      name: branch
+    })
     this.setState({
       optionsByClient: stat.getStatByClient(''),
       optionsByAccount: stat.getStatByAccount('')
