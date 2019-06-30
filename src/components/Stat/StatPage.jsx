@@ -14,7 +14,7 @@ var optionsByClientTemp = {
     width: 380,
     type: 'pie',
   },
-  labels: ["A0 number", "A1 number", "Loan number"],
+  labels: ["A0", "A1", "Loan"],
   series: [44, 55, 66],
   responsive: [{
     breakpoint: 480,
@@ -99,8 +99,7 @@ class BarChart extends Component {
     this.setState({
       optionsByClient0: optionsByClientTemp,
       optionsByAccount0: optionsByAccountTemp,
-      optionsByClient1: optionsByClientTemp,
-      optionsByAccount1: optionsByAccountTemp
+      t: '金额'
     })
   }
 
@@ -129,6 +128,10 @@ class BarChart extends Component {
     }, {
       name: branch
     })
+
+    this.setState({
+      t: '金额'
+    })
   }
 
   onU = (branch) => {
@@ -153,6 +156,10 @@ class BarChart extends Component {
     }, {
         name: branch
     })
+
+    this.setState({
+      t: '用户'
+    })
   }
 
   render() {
@@ -163,7 +170,7 @@ class BarChart extends Component {
         </div>
         <div className="client-top-card">
           <div className="client-card" style={{ width: "56%" }}>
-            <h3> 最近十个月用户数统计 </h3>
+            <h3> 最近十个月{this.state.t}数统计 </h3>
             <Chart
               options={this.state.optionsByAccount0 }
               series={this.state.optionsByAccount0.series}
@@ -179,7 +186,7 @@ class BarChart extends Component {
               width="300"
             />
             <div style={{ marginLeft: 20, marginTop: 20 }}>
-              <h3>CHZ Bank 客户分布情况</h3>
+              <h3>CHZ Bank {this.state.t}分布情况</h3>
               <Divider />
               <p>共有客户多少</p>
               <p>某某支行客户最多，为233人</p>
