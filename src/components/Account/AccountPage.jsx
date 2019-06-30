@@ -6,7 +6,6 @@ import logo from "../../assets/logo.svg";
 import logoNameB from "../../assets/logo-name-black.svg";
 
 import API from '../../util/Api';
-import Account from '../../util/Account';
 import SearchPage0 from './SearchPage0';
 import SearchPage1 from './SearchPage1';
 import AddPage0 from './AddPage0';
@@ -30,8 +29,6 @@ const Logo = (
       src={logoNameB} />
   </div>
 );
-
-const account = new Account();
 
 class AccountPage extends Component {
   state = {
