@@ -5,6 +5,7 @@ import './index.css';
 import logo from "../../assets/logo.svg";
 import logoNameB from "../../assets/logo-name-black.svg";
 
+import API from '../../util/Api';
 import Account from '../../util/Account';
 import SearchPage0 from './SearchPage0';
 import SearchPage1 from './SearchPage1';
@@ -47,8 +48,9 @@ class AccountPage extends Component {
   componentWillMount() {
     this.setState({
       initLoading: false,
-      list0: account.getAccount('0')
     })
+    this.fresh0();
+    this.fresh1();
   }
 
   showAddModal = () => {
@@ -69,64 +71,140 @@ class AccountPage extends Component {
     });
   };
 
-  onUpdate0 = (newClient) => {
-    // account.addClient(newClient);
-    this.setState({
-      list0: this.state.list0.concat(newClient),
+  fresh0 = () => {
+    API.GET('account0', (data) => {
+      this.setState({
+        list0: data
+      })
     })
   }
 
-  onUpdate1 = (newClient) => {
-    // account.addClient(newClient);
-    this.setState({
-      list1: this.state.list1.concat(newClient),
+  fresh1 = () => {
+    API.GET('account1', (data) => {
+      this.setState({
+        list1: data
+      })
     })
+  }
+
+  onUpdate0 = (newBranch) => {
+    API.POST('account0', (data) => {
+      if (!data.status) {
+        alert('添加失败！');
+      } else {
+        this.fresh0();
+      }
+    }, newBranch);
+  }
+
+  onUpdate1 = (newBranch) => {
+    API.POST('account1', (data) => {
+      if (!data.status) {
+        alert('添加失败！');
+      } else {
+        this.fresh1();
+      }
+    }, newBranch);
   }
 
   onChange = (newInfo) => {
-    var { list, oldIndex, oldId, type } = this.state;
+    var { type } = this.state;
     if (type === '0') {
-      account.changeClient(oldId, newInfo, '0');
-      list[oldIndex] = newInfo;
-      this.setState({
-        list0: list
-      })
+      API.PATCH('account0', data => {
+        if (!data.status) {
+          alert('修改失败！');
+        } else {
+          this.fresh0();
+        }
+      }, newInfo);
     } else {
-      account.changeClient(oldId, newInfo, '1');
-      list[oldIndex] = newInfo;
-      this.setState({
-        list1: list
-      })
+      API.PATCH('account1', data => {
+        if (!data.status) {
+          alert('修改失败！');
+        } else {
+          this.fresh1();
+        }
+      }, newInfo);
     }
   }
 
   onSearch = (keys) => {
-    this.setState({
-      list0: account.searchClient(keys)
-    })
+    var { type } = this.state;
+    if (type === '0') {
+      API.GET('account0', data => {
+        this.setState({
+          list0: data
+        })
+      }, keys);
+    } else {
+      API.GET('account1', data => {
+        this.setState({
+          list1: data
+        })
+      }, keys);
+    }
   }
+
+  handleDelete = (item, index) => {
+    if (this.state.type === '0') {
+      API.DELETE('account0', (data) => {
+        if (!data.status) {
+          alert('删除失败！');
+        } else {
+          this.fresh0();
+        }
+      }, {
+          aid: item.aid
+      });
+    } else {
+      API.DELETE('account1', (data) => {
+        if (!data.status) {
+          alert('删除失败！');
+        } else {
+          this.fresh1();
+        }
+      }, {
+          aid: item.aid
+      });
+    }
+  }
+
+  // onUpdate0 = (newClient) => {
+  //   // account.addClient(newClient);
+  //   this.setState({
+  //     list0: this.state.list0.concat(newClient),
+  //   })
+  // }
+
+  // onUpdate1 = (newClient) => {
+  //   // account.addClient(newClient);
+  //   this.setState({
+  //     list1: this.state.list1.concat(newClient),
+  //   })
+  // }
+
+  // onChange = (newInfo) => {
+  //   var { list, oldIndex, oldId, type } = this.state;
+  //   if (type === '0') {
+  //     account.changeClient(oldId, newInfo, '0');
+  //     list[oldIndex] = newInfo;
+  //     this.setState({
+  //       list0: list
+  //     })
+  //   } else {
+  //     account.changeClient(oldId, newInfo, '1');
+  //     list[oldIndex] = newInfo;
+  //     this.setState({
+  //       list1: list
+  //     })
+  //   }
+  // }
 
   handleEditCancel = () => {
     this.setState({
       editVisible: false,
     });
   };
-
-  handleDelete = (item, index) => {
-    if (this.state.type === '0'){
-      var l = this.state.list0;
-      l.splice(index, 1);
-      this.setState({
-        list0: l
-      })
-    } else {
-      l = this.state.list1;
-      l.splice(index, 1);
-      this.setState({
-        list1: l
-      })
-    }
-  }
 
   handleEdit = (item, index) => {
     console.log(item);

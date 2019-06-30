@@ -5,6 +5,7 @@ import './index.css';
 import logo from "../../assets/logo.svg";
 import logoNameB from "../../assets/logo-name-black.svg";
 
+import API from '../../util/Api';
 import Client from '../../util/Client';
 import SearchPage from './SearchPage';
 import AddPage from './AddPage';
@@ -56,7 +57,6 @@ class ClientPage extends Component {
   componentDidMount() {
     this.setState({
       initLoading: false,
-      list: client.getClient()
     })
   }
 
@@ -78,27 +78,98 @@ class ClientPage extends Component {
     });
   };
 
-  onUpdate = (newClient) => {
-    client.addClient(newClient);
-    this.setState({
-      list: this.state.list.concat(newClient),
+  componentWillMount() {
+    this.fresh();
+  }
+
+  fresh = () => {
+    API.GET('client', (data) => {
+      this.setState({
+        list: data
+      })
     })
+  }
+
+  onUpdate = (newBranch) => {
+    API.POST('client', (data) => {
+      if (!data.status) {
+        alert('添加失败！');
+      } else {
+        this.fresh();
+      }
+    }, newBranch);
+
+    /**
+  * emplyee.addEmplyee(newEmplyee);
+  this.setState({
+  list: this.state.list.concat(newEmplyee),
+  })
+  * */
   }
 
   onChange = (newInfo) => {
-    var { list, oldIndex, oldId } = this.state;
-    client.changeClient(oldId, newInfo);
-    list[oldIndex] = newInfo;
-    this.setState({
-      list: list
-    })
+    API.PATCH('client', data => {
+      if (!data.status) {
+        alert('修改失败！');
+      } else {
+        this.fresh();
+      }
+    }, newInfo);
+
+    // var { list, oldIndex, oldId } = this.state;
+    // emplyee.changeEmplyee(oldId, newInfo);
+    // list[oldIndex] = newInfo;
+    // this.setState({
+    //   list: list
+    // })
   }
 
   onSearch = (keys) => {
-    this.setState({
-      list: client.searchClient(keys)
-    })
+    API.GET('client', data => {
+      this.setState({
+        searchResult: data
+      })
+    }, keys)
+
+    // this.setState({
+    //   list: emplyee.searchEmplyee(keys)
+    // })
   }
+
+  handleDelete = (item, index) => {
+    API.DELETE('client', (data) => {
+      if (!data.status) {
+        alert('删除失败！');
+      } else {
+        this.fresh();
+      }
+    }, {
+        id: item.id
+      });
+  }
+
+
+  // onUpdate = (newClient) => {
+  //   client.addClient(newClient);
+  //   this.setState({
+  //     list: this.state.list.concat(newClient),
+  //   })
+  // }
+
+  // onChange = (newInfo) => {
+  //   var { list, oldIndex, oldId } = this.state;
+  //   client.changeClient(oldId, newInfo);
+  //   list[oldIndex] = newInfo;
+  //   this.setState({
+  //     list: list
+  //   })
+  // }
+
+  // onSearch = (keys) => {
+  //   this.setState({
+  //     list: client.searchClient(keys)
+  //   })
+  // }
 
   onLoadMore = () => {
     this.setState({
@@ -124,14 +195,14 @@ class ClientPage extends Component {
     });
   };
 
-  handleDelete = (item, index) => {
-    var l = this.state.list;
-    l.splice(index, 1);
-    this.setState({
-      list: l
-    })
-    client.deleteClient(item.id);
-  }
+  // handleDelete = (item, index) => {
+  //   var l = this.state.list;
+  //   l.splice(index, 1);
+  //   this.setState({
+  //     list: l
+  //   })
+  //   client.deleteClient(item.id);
+  // }
 
   handleEdit = (item, index) => {
     console.log(item);

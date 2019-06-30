@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Icon, Divider, List, Avatar, Popconfirm, Skeleton, Button, Tooltip, Modal } from 'antd';
 
+import API from '../../util/Api';
 import Emplyee from '../../util/Emplyees';
 import SearchPage from './SearchPage';
 import AddPage from './AddPage';
@@ -40,7 +41,7 @@ class CollapsePage extends Component {
     addVisible: false,
     editVisible: false,
     count: 3,
-    list: emplyee.getEmplyee(),
+    list: [],
   };
 
   componentDidMount() {
@@ -67,26 +68,81 @@ class CollapsePage extends Component {
     });
   };
 
-  onUpdate = (newEmplyee) => {
-    emplyee.addEmplyee(newEmplyee);
-    this.setState({
-      list: this.state.list.concat(newEmplyee),
+  componentWillMount(){
+    this.fresh();
+  }
+
+  fresh = () => {
+    API.GET('emplyee', (data) => {
+      this.setState({
+        list: data
+      })
     })
+  }
+
+  onUpdate = (newBranch) => {
+    API.POST('emplyee', (data) => {
+      if (!data.status) {
+        alert('添加失败！');
+      } else {
+        this.fresh();
+      }
+    }, newBranch);
+
+      /**
+    * emplyee.addEmplyee(newEmplyee);
+    this.setState({
+    list: this.state.list.concat(newEmplyee),
+    })
+    * */
   }
 
   onChange = (newInfo) => {
-    var { list, oldIndex, oldId } = this.state;
-    emplyee.changeEmplyee(oldId, newInfo);
-    list[oldIndex] = newInfo;
-    this.setState({
-      list: list
-    })
+    API.PATCH('emplyee', data => {
+      if (!data.status) {
+        alert('修改失败！');
+      } else {
+        this.fresh();
+      }
+    }, newInfo);
+
+        // var { list, oldIndex, oldId } = this.state;
+    // emplyee.changeEmplyee(oldId, newInfo);
+    // list[oldIndex] = newInfo;
+    // this.setState({
+    //   list: list
+    // })
   }
 
   onSearch = (keys) => {
-    this.setState({
-      list: emplyee.searchEmplyee(keys)
-    })
+    API.GET('emplyee', data => {
+      this.setState({
+        searchResult: data
+      })
+    }, keys)
+
+    // this.setState({
+    //   list: emplyee.searchEmplyee(keys)
+    // })
+  }
+
+  handleDelete = (item, index) => {
+    API.DELETE('emplyee', (data) => {
+      if (!data.status) {
+        alert('删除失败！');
+      } else {
+        this.fresh();
+      }
+    }, {
+      id: item.id
+    });
+
+    // var l = this.state.list;
+    // l.splice(index, 1);
+    // this.setState({
+    //   list: l
+    // })
+    // emplyee.deleteEmplyee(item.id);
   }
 
   onLoadMore = () => {
@@ -112,15 +168,6 @@ class CollapsePage extends Component {
       editVisible: false,
     });
   };
-
-  handleDelete = (item, index) => {
-    var l = this.state.list;
-    l.splice(index, 1);
-    this.setState({
-      list: l
-    })
-    emplyee.deleteEmplyee(item.id);
-  }
 
   handleEdit = (item, index) => {
     this.setState({

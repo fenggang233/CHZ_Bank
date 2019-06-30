@@ -53,14 +53,6 @@ class CollapsePage extends Component {
     stat: {}
   };
 
-  fresh = () => {
-    API.GET('branch', (data) => {
-      this.setState({
-        list: data
-      })
-    })
-  }
-
   componentWillMount() {
     const stat = branch.getAssetsStatByCity(); 
     this.setState({
@@ -85,25 +77,53 @@ class CollapsePage extends Component {
     })
   }
 
+
+  fresh = () => {
+    API.GET('branch', (data) => {
+      this.setState({
+        list: data
+      })
+    })
+  }
+
   onUpdate = (newBranch) => {
     API.POST('branch', (data) => {
-      this.fresh();
+      if (!data.status) {
+        alert('添加失败！');
+      } else {
+        this.fresh();
+      }
     }, newBranch);
   }
 
   onChange = (newInfo) => {
     API.PATCH('branch', data => {
-      this.fresh();
+      if (!data.status) {
+        alert('修改失败！');
+      } else {
+        this.fresh();
+      }
     }, newInfo);
   }
 
   onSearch = (keys) => {
     API.GET('branch', data => {
-      console.log(data);
       this.setState({
         searchResult: data
       })
     }, keys)
+  }
+
+  handleDeleteBranch = (name, index) => {
+    API.DELETE('branch', (data) => {
+      if (!data.status) {
+        alert('删除失败！');
+      } else {
+        this.fresh();
+      }
+    }, {
+        name: name
+      });
   }
 
   showAddModal = () => {
@@ -130,17 +150,6 @@ class CollapsePage extends Component {
       editVisible: false,
     });
   };
-
-  handleDeleteBranch = (name, index) => {
-    API.DELETE('branch', (data) => {
-      if (!data.status) {
-        alert('删除失败, 改记录可能作为');
-      }
-      this.fresh();
-    }, { 
-      name: name 
-    });
-  }
 
   render() {
     const { initLoading, loading, list, addVisible, editVisible, searchResult } = this.state;

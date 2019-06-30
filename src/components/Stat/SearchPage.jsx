@@ -16,8 +16,7 @@ class AdvancedSearchForm extends Component {
   handleSearch = e => {
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
-      console.log('Received values of form: ', values);
-      this.props.onSearch(values);
+      this.props.onUpdate(values);
     });
   };
 

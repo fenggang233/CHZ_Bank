@@ -3,16 +3,18 @@ import Chart from "react-apexcharts";
 import { Divider } from 'antd';
 
 import SearchPage from './SearchPage';
+import Stat from '../../util/Stat';
 
 import './index.css';
 
-var pie_options = {
+
+var optionsByClientTemp = {
   chart: {
     width: 380,
     type: 'pie',
   },
-  labels: ['Team A', 'Team B', 'Team C', 'Team D', 'Team E'],
-  series: [44, 55, 13, 43, 22],
+  labels: ['Team A', 'Team B'],
+  series: [44, 55],
   responsive: [{
     breakpoint: 480,
     options: {
@@ -26,7 +28,7 @@ var pie_options = {
   }]
 }
 
-var options = {
+var optionsByAccountTemp = {
   chart: {
     height: 350,
     type: 'bar',
@@ -77,27 +79,54 @@ var options = {
   }
 }
 
+const stat = new Stat();
 
 class BarChart extends Component {
+
+  state = {
+    branch: '',
+    branchList: '',
+    stat: stat,
+    optionsByClient: {},
+    optionsByAccount: {}
+  }
+
+  componentWillMount() {
+    // get branch list
+    this.setState({
+      optionsByClient: optionsByClientTemp,
+      optionsByAccount: optionsByAccountTemp
+    })
+  }
+
+  onUpdate = (branch) => {
+    this.setState({
+      optionsByClient: stat.getStatByClient(''),
+      optionsByAccount: stat.getStatByAccount('')
+    })
+  }
+
   render() {
+    const { optionsByAccount, optionsByClient } = this.state;
     return (
       <div className="root-page" id="client-page">
         <div className="client-card" style={{ marginBottom: 20 }}>
-          <SearchPage />
+          <SearchPage onUpdate={this.onUpdate} />
         </div>
         <div className="client-top-card">
           <div className="client-card" style={{ width: "56%" }}>
+            <h3> 最近十个月用户数统计 </h3>
             <Chart
-              options={options}
-              series={options.series}
+              options={ optionsByAccount }
+              series={optionsByAccount.series}
               type="bar"
               width="600"
             />
           </div>
           <div className="emplyee-card" style={{ width: "42%" }}>
             <Chart
-              options={pie_options}
-              series={pie_options.series}
+              options={optionsByClient}
+              series={optionsByClient.series}
               type="pie"
               width="300"
             />
@@ -105,6 +134,32 @@ class BarChart extends Component {
               <h3>CHZ Bank 客户分布情况</h3>
               <Divider />
               <p>共有客户多少</p>
+              <p>某某支行客户最多，为233人</p>
+              <p>某某支行客户最少，为0人</p>
+            </div>
+          </div>
+        </div>
+        <div className="client-top-card">
+          <div className="client-card" style={{ width: "56%" }}>
+            <h3> 最近一年金额统计 </h3>
+            <Chart
+              options={optionsByAccount}
+              series={optionsByAccount.series}
+              type="bar"
+              width="600"
+            />
+          </div>
+          <div className="emplyee-card" style={{ width: "42%" }}>
+            <Chart
+              options={optionsByClient}
+              series={optionsByClient.series}
+              type="pie"
+              width="300"
+            />
+            <div style={{ marginLeft: 20, marginTop: 20 }}>
+              <h3>CHZ Bank 金额分布情况</h3>
+              <Divider />
+              <p>共有金额多少</p>
               <p>某某支行客户最多，为233人</p>
               <p>某某支行客户最少，为0人</p>
             </div>

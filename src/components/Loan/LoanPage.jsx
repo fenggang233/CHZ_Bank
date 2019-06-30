@@ -5,6 +5,7 @@ import './index.css';
 import logo from "../../assets/logo.svg";
 import logoNameB from "../../assets/logo-name-black.svg";
 
+import API from '../../util/Api';
 import Loan from '../../util/Loan';
 import SearchPage from './SearchPage';
 import AddPage from './AddPage';
@@ -41,7 +42,6 @@ class LoanPage extends Component {
   componentDidMount() {
     this.setState({
       initLoading: false,
-      list: loan.getLoan()
     })
   }
 
@@ -63,28 +63,82 @@ class LoanPage extends Component {
     });
   };
 
-  onUpdate = (newLoan) => {
-    loan.addLoan(newLoan);
-    console.log(newLoan);
-    this.setState({
-      list: this.state.list.concat(newLoan),
+  componentWillMount() {
+    this.fresh();
+  }
+
+  fresh = () => {
+    API.GET('loan', (data) => {
+      this.setState({
+        list: data
+      })
     })
+  }
+
+  onUpdate = (newLoan) => {
+    API.POST('loan', (data) => {
+      if (!data.status) {
+        alert('添加失败！');
+      } else {
+        this.fresh();
+      }
+    }, newLoan);
   }
 
   onChange = (newInfo) => {
-    var { list, oldIndex, oldId } = this.state;
-    loan.changeLoan(oldId, newInfo);
-    list[oldIndex] = newInfo;
-    this.setState({
-      list: list
-    })
+    API.PATCH('loan', data => {
+      if (!data.status) {
+        alert('修改失败！');
+      } else {
+        this.fresh();
+      }
+    }, newInfo);
   }
 
   onSearch = (keys) => {
-    this.setState({
-      list: loan.searchLoan(keys)
-    })
+    API.GET('loan', data => {
+      this.setState({
+        list: data
+      })
+    }, keys)
   }
+
+  handleDelete = (item, index) => {
+    API.DELETE('loan', (data) => {
+      if (!data.status) {
+        alert('删除失败！');
+      } else {
+        this.fresh();
+      }
+    }, {
+        lid: item.lid
+    });
+  }
+
+
+
+  // onUpdate = (newLoan) => {
+  //   loan.addLoan(newLoan);
+  //   console.log(newLoan);
+  //   this.setState({
+  //     list: this.state.list.concat(newLoan),
+  //   })
+  // }
+
+  // onChange = (newInfo) => {
+  //   var { list, oldIndex, oldId } = this.state;
+  //   loan.changeLoan(oldId, newInfo);
+  //   list[oldIndex] = newInfo;
+  //   this.setState({
+  //     list: list
+  //   })
+  // }
+
+  // onSearch = (keys) => {
+  //   this.setState({
+  //     list: loan.searchLoan(keys)
+  //   })
+  // }
 
   handleEditCancel = () => {
     this.setState({
@@ -92,14 +146,14 @@ class LoanPage extends Component {
     });
   };
 
-  handleDelete = (item, index) => {
-    var l = this.state.list;
-    l.splice(index, 1);
-    this.setState({
-      list: l
-    })
-    loan.deleteLoan(item.lid);
-  }
+  // handleDelete = (item, index) => {
+  //   var l = this.state.list;
+  //   l.splice(index, 1);
+  //   this.setState({
+  //     list: l
+  //   })
+  //   loan.deleteLoan(item.lid);
+  // }
 
   handleEdit = (item, index) => {
     console.log(item);
