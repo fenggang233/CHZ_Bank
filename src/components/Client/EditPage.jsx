@@ -49,7 +49,7 @@ class EditForm extends Component {
             )}
             {getFieldDecorator('id', {
             })(
-              <Input style={{ width: "60%" }}
+              <Input style={{ width: "60%" }} disabled={true}
                 prefix={<Icon type="idcard" style={{ color: 'rgba(0,0,0,.25)' }} />}
                 placeholder={oldInfo.id}
               />,

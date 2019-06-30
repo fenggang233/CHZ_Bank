@@ -50,7 +50,7 @@ class AdvancedSearchForm extends Component {
             <Button type="primary" htmlType="submit" icon="search" style={{ margin: 5 }}>
               查询
             </Button>
-            <Button style={{ marginLeft: 5 }} onClick={this.handleU} icon="delete" >
+            <Button style={{ marginLeft: 5 }} type="primary" onClick={this.handleU} icon="fast-forward" >
               下一个
             </Button>
             <Button style={{ marginLeft: 5 }} onClick={this.handleReset} icon="delete" >
