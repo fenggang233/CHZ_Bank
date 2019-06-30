@@ -1,8 +1,6 @@
 import { Form, Row, Col, Input, Button, Select } from 'antd';
 import React, { Component } from 'react';
 
-import API from '../../util/Api';
-
 const InputGroup = Input.Group;
 const { Option } = Select;
 

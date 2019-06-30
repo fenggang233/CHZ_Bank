@@ -1,10 +1,7 @@
-import { Form, Row, Col, Input, Button, Select } from 'antd';
+import { Form, Row, Col, Input, Button } from 'antd';
 import React, { Component } from 'react';
 
-import API from '../../util/Branch';
-
 const InputGroup = Input.Group;
-const { Option } = Select;
 
 class AdvancedSearchForm extends Component {
   state = {

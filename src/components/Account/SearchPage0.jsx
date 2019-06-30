@@ -1,11 +1,9 @@
 import { Form, Row, Col, Input, Button, DatePicker } from 'antd';
 import React, { Component } from 'react';
 
-import Branch from '../../util/Branch';
 import locale from 'antd/lib/date-picker/locale/zh_CN';
 
 const InputGroup = Input.Group;
-const branch = new Branch();
 
 class AdvancedSearchForm extends Component {
   state = {
