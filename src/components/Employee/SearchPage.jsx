@@ -1,17 +1,24 @@
 import { Form, Row, Col, Input, Button, Select } from 'antd';
 import React, { Component } from 'react';
 
-import Branch from '../../util/Branch';
+import API from '../../util/Api';
 
 const InputGroup = Input.Group;
 const { Option } = Select;
-const branch = new Branch();
 
 class AdvancedSearchForm extends Component {
   state = {
     expand: false,
-    cityList: branch.genCityList()
+    cityList: []
   };
+
+  componentWillMount() {
+    // API.GET('stat/city/', data => {
+    //   this.setState({
+    //     cityList: data
+    //   })
+    // });
+  }
 
   handleSearch = e => {
     e.preventDefault();
@@ -48,15 +55,7 @@ class AdvancedSearchForm extends Component {
               <Option value="经理">经理</Option>
             </Select>)}
             {getFieldDecorator('branch', {
-            })(<Select style={{ width: '20%' }} placeholder="工作单位">
-              {
-                this.state.cityList.map((city, i) => {
-                  return (
-                    <Option key={i} value={city}>{city}</Option>
-                  )
-                })
-              }
-            </Select>)}
+            })(<Input style={{ width: '20%' }} placeholder="银行" />)}
           </InputGroup>
         </Row>
         <Row>

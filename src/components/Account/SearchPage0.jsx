@@ -10,7 +10,7 @@ const branch = new Branch();
 class AdvancedSearchForm extends Component {
   state = {
     expand: false,
-    cityList: branch.genCityList()
+    cityList: []
   };
 
   handleSearch = e => {

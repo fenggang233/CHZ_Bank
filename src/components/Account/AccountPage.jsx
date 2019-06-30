@@ -222,12 +222,12 @@ class AccountPage extends Component {
         <List
           header={
             <div>
-              <h3>CHZ Bank 贷款列表</h3>
+              <h3>CHZ Bank 账户列表</h3>
               <Radio.Group value={type} style={{ marginTop: 10 }} onChange={this.handleTypeChange}>
                 <Radio.Button value="0">储蓄账户</Radio.Button>
                 <Radio.Button value="1">支票账户</Radio.Button>
               </Radio.Group>
-              <Divider />
+              <Divider/>
               <div style={{ display: this.state.type === '0' ? '' : 'none' }}>
                 <SearchPage0 onSearch={this.onSearch} />
               </div>

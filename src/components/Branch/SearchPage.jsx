@@ -1,17 +1,23 @@
 import { Form, Row, Col, Input, Button, Select } from 'antd';
 import React, { Component } from 'react';
 
-import Branch from '../../util/Branch'; 
+import API from '../../util/Branch';
 
 const InputGroup = Input.Group;
 const { Option } = Select;
-const branch = new Branch();
 
 class AdvancedSearchForm extends Component {
   state = {
     expand: false,
-    cityList: branch.genCityList()
   };
+
+  componentWillMount(){
+    // API.GET('stat/city/', data => {
+    //   this.setState({
+    //     cityList: data
+    //   })
+    // });
+  }
 
   handleSearch = e => {
     e.preventDefault();
@@ -39,16 +45,8 @@ class AdvancedSearchForm extends Component {
             })(<Input style={{ width: '30%' }} placeholder="按名查找" />)}
             {getFieldDecorator('assets', {
             })(<Input style={{ width: '30%' }} placeholder="比资产查找" />)}
-            {getFieldDecorator('date', {
-            })(<Select style={{ width: '40%' }} placeholder="或选择城市">
-              {
-                this.state.cityList.map((city, i) => {
-                  return(
-                    <Option key={i} value={city}>{city}</Option>
-                  )
-                })
-              }
-            </Select>)}
+            {getFieldDecorator('branch', {
+            })(<Input style={{ width: '40%' }} placeholder="支行名" />)}
           </InputGroup>
         </Row>
         <Row>
