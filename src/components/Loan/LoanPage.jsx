@@ -188,7 +188,7 @@ class LoanPage extends Component {
                     </Tooltip>
                   </div>
                   <div className="client-tab">
-                    <Tooltip title="贷款次数">
+                    <Tooltip title={"贷款次数，计划打款" + item.total_time + "次数"}>
                       <Icon type="history" className="client-tab-icon" />{item.time}
                     </Tooltip>
                   </div>

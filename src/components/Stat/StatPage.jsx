@@ -88,45 +88,74 @@ class BarChart extends Component {
     branch: '',
     branchList: '',
     stat: stat,
-    optionsByClient: {},
-    optionsByAccount: {}
+    optionsByClient0: {},
+    optionsByAccount0: {},
+    optionsByClient1: {},
+    optionsByAccount1: {}
   }
 
   componentWillMount() {
     // get branch list
     this.setState({
-      optionsByClient: optionsByClientTemp,
-      optionsByAccount: optionsByAccountTemp
+      optionsByClient0: optionsByClientTemp,
+      optionsByAccount0: optionsByAccountTemp,
+      optionsByClient1: optionsByClientTemp,
+      optionsByAccount1: optionsByAccountTemp
     })
   }
 
   onUpdate = (branch) => {
+    console.log(branch)
     API.GET('stat/balance/', data => {
-      console.log(data)
       var x = optionsByClientTemp;
       x.series = data.series;
       x.labels = data.labels;
       this.setState({
-        optionsByClient: x
+        optionsByClient0: x
       })
     }, {
-      name: 'FirstBranch'
+      name: branch
     })
 
-    API.GET('stat/month/', data => {
+    API.GET('stat/balance/month/', data => {
       var x = optionsByAccountTemp;
       x.series = data.series;
       x.labels = data.labels;
       this.setState({
-        optionsByAccount: x
+        optionsByAccount0: x
       })
     }, {
-      name: 'FirstBranch'
+      name: branch
     })
+
+    API.GET('stat/number/', data => {
+      var x = optionsByClientTemp;
+      x.series = data.series;
+      x.labels = data.labels;
+      this.setState({
+        optionsByClient1: x
+      })
+      console.log(data);
+    }, {
+        name: branch
+      })
+
+    API.GET('stat/number/month/', data => {
+      var x = optionsByAccountTemp;
+      x.series = data.series;
+      x.labels = data.labels;
+      this.setState({
+        optionsByAccount1: x
+      })
+      console.log(data);
+    }, {
+        name: branch
+      })
   }
 
   render() {
-    const { optionsByAccount, optionsByClient } = this.state;
+    const { optionsByAccount0, optionsByClient0, optionsByClient1,
+      optionsByAccount1 } = this.state;
     return (
       <div className="root-page" id="client-page">
         <div className="client-card" style={{ marginBottom: 20 }}>
@@ -136,16 +165,16 @@ class BarChart extends Component {
           <div className="client-card" style={{ width: "56%" }}>
             <h3> 最近十个月用户数统计 </h3>
             <Chart
-              options={ optionsByAccount }
-              series={optionsByAccount.series}
+              options={ optionsByAccount0 }
+              series={optionsByAccount0.series}
               type="bar"
               width="600"
             />
           </div>
           <div className="emplyee-card" style={{ width: "42%" }}>
             <Chart
-              options={optionsByClient}
-              series={optionsByClient.series}
+              options={optionsByClient0}
+              series={optionsByClient0.series}
               type="pie"
               width="300"
             />
@@ -162,16 +191,16 @@ class BarChart extends Component {
           <div className="client-card" style={{ width: "56%" }}>
             <h3> 最近一年金额统计 </h3>
             <Chart
-              options={optionsByAccount}
-              series={optionsByAccount.series}
+              options={optionsByAccount1}
+              series={optionsByAccount1.series}
               type="bar"
               width="600"
             />
           </div>
           <div className="emplyee-card" style={{ width: "42%" }}>
             <Chart
-              options={optionsByClient}
-              series={optionsByClient.series}
+              options={optionsByClient1}
+              series={optionsByClient1.series}
               type="pie"
               width="300"
             />

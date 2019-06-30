@@ -1,10 +1,9 @@
-import { Form, Row, Col, Input, Button, Select } from 'antd';
+import { Form, Row, Col, Input, Button } from 'antd';
 import React, { Component } from 'react';
 
 import Branch from '../../util/Branch';
 
 const InputGroup = Input.Group;
-const { Option } = Select;
 const branch = new Branch();
 
 class AdvancedSearchForm extends Component {
@@ -16,7 +15,7 @@ class AdvancedSearchForm extends Component {
   handleSearch = e => {
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
-      this.props.onUpdate(values);
+      this.props.onUpdate(values.branch);
     });
   };
 
@@ -36,15 +35,7 @@ class AdvancedSearchForm extends Component {
         <Row gutter={24}>
           <InputGroup compact={true} onPressEnter={e => { console.log(e) }}>
             {getFieldDecorator('branch', {
-            })(<Select style={{ width: '20%' }} placeholder="支行">
-              {
-                this.state.cityList.map((city, i) => {
-                  return (
-                    <Option key={i} value="FirstBranch">{city}</Option>
-                  )
-                })
-              }
-            </Select>)}
+            })(<Input style={{ width: '30%' }} placeholder="支行名" />)}
           </InputGroup>
         </Row>
         <Row>
