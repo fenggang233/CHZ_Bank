@@ -104,14 +104,15 @@ class LoanPage extends Component {
   }
 
   handleDelete = (item, index) => {
+    console.info(item.id)
     API.DELETE('loan/', (data) => {
       if (!data.status) {
-        alert('删除失败！');
+        message.info(data.msg)
       } else {
         this.fresh();
       }
     }, {
-        lid: item.lid
+      id: item.id
     });
   }
 
